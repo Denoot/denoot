@@ -142,11 +142,14 @@ app.get("/keyboards.html", (req: Denoot.Request, res: Denoot.Response)) => {
 });
 ```
 ### File
+
+**Important:** `res.sendFile` is async. You must await the file read or Denoot will assume you don't want to await it. You can either await the promise or return a promise to tell Denoot to wait.
 ```ts
 app.get("/static/video.mp4", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.sendFile("./static/video.mp4");
+    return res.sendFile("./static/video.mp4");
 });
 ```
+Please note the return statement in the above example.
 ### Uint8Array
 ```ts
 app.get("/binary", (req: Denoot.Request, res: Denoot.Response)) => {
