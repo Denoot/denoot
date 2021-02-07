@@ -495,7 +495,7 @@ app.get("/user/logout", logout);
 ```
 ```ts
 // routes/user.ts
-import { Request, Response } from "../https://deno.land/x/denoot/mod.ts";
+import { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 export const login = (req: Request, res: Response) => {
     res.send("Welcome back!");
