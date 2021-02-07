@@ -213,7 +213,7 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
 
 
 ### Get Cookies
-Simple read `req.cookies`.
+Simply read `req.cookies`.
 ```ts
 app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
     console.table("I got the following cookies:", req.cookies);
@@ -318,7 +318,7 @@ app.static("/public", {
 });
 ```
 
-__Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) to be served or displayed in auto index. If you absolutely, 100% know what you're doing you can change this behavior by settings `res.state.allowDotFiles` to `true`.
+__Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) to be served or displayed in auto index. If you absolutely, 100% know what you're doing you can change this behavior by setting `res.state.allowDotFiles` to `true`.
 
 
 ## Request And Response Headers
