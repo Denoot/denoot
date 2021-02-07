@@ -310,7 +310,7 @@ app.static("/public", {
     autoIndex: true
 });
 ```
-Enable index files. If you want Denoot to look for en index file upon resolving to a directory, set `options.index` to your file extension for example: `.html` where `index.html` will be served if found inside the directory.
+Enable index files. If you want Denoot to look for an index file upon resolving to a directory, set `options.index` to your file extension for example: `.html` where `index.html` will be served if found inside the directory.
 ```ts
 app.static("/public", {
     folder: "static",
@@ -325,7 +325,7 @@ __Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.o
 [⬆️ Table of Contents ⬆️](#table-of-contents)
 
 
-Denoot organizes the headers as Deno native Headers in `req.query`. If you prefer Object instead you can use the readonly property `res.headersObject` and respectively `req.headersObject`.
+Denoot organizes the headers as Deno native Headers in `req.headers` and `res.headers`. If you prefer Object instead you can use the readonly property `res.headersObject` and respectively `req.headersObject`.
 ```ts
 app.post("/admin/post", (req: Denoot.Request, res: Denoot.Response)) => {
     req.headers.get("Authorization");
