@@ -81,7 +81,6 @@ export const app = (port: number, hostname?: string, listeningCallback?: Listeni
 
 export default app;
 
-
 /**
  * This is extremely infuriating but currently TSC does
  * not support `export type * from x` which is very sad :(
