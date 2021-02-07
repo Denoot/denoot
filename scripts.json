@@ -27,7 +27,7 @@
     },
     "test_refactoring": {
       "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_refactoring.ts",
-      "desc": "refactoring"
+      "desc": "refactoring "
     }
   }
 }
