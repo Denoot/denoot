@@ -211,7 +211,6 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
 ## Cookies
 [⬆️ Table of Contents ⬆️](#table-of-contents)
 
-
 ### Get Cookies
 Simply read `req.cookies`.
 ```ts
