@@ -7,7 +7,7 @@ import { decode } from "https://deno.land/std@0.85.0/encoding/utf8.ts";
 
 /**
  * The HTTP request as abstracted by Denoot
- * @class DenootRequest
+ * @class DenootRequest 
  */
 class DenootRequest {
 
