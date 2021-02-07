@@ -12,9 +12,7 @@
 ## Getting Started
 
 
-
-
- server.ts
+server.ts
 ```ts
 import * as Denoot from "../src/denoot.ts";
 

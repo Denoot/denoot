@@ -8,5 +8,5 @@ app.use((req: Denoot.Request, _res: Denoot.Response, next: Denoot.Next) => {
 });
 
 app.get("/vaggies/echo", (req: Denoot.Request, res: Denoot.Response) => {
-    res.send(req.variables.get("veggies")); // ["avocado","carrot","tomato"]
+    res.send(req.variables.get("veggies")); // ["avocado","carrot","tomato"] 
 });
