@@ -14,7 +14,7 @@
 
 server.ts
 ```ts
-import * as Denoot from "../src/denoot.ts";
+import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 
@@ -77,18 +77,18 @@ To create app you must at least provide `port`. `host` is optional and will defa
 ### Examples — Pick Your Poison
 
 ```ts
-import * as Denoot from "../src/denoot.ts";
+import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "0.0.0.0", console.table);
 ```
 
 ```ts
-import * as Denoot from "../src/denoot.ts";
+import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "localhost", ({ localhostURL }) => console.log(`Listening on ${localhostURL}.`));
 ```
 ```ts
-import * as Denoot from "../src/denoot.ts";
+import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 ```
@@ -392,7 +392,7 @@ app.get(["/api/path", "/api/path2"], (req: Denoot.Request, res: Denoot.Response)
 ### Handlebars Example
 Simple handlebars for Deno example.
 ```ts
-import * as Denoot from "../src/denoot.ts";
+import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 import { Handlebars } from "https://deno.land/x/handlebars/mod.ts";
 
 const app = Denoot.app(3000, "0.0.0.0", ({ localhostURL }) => console.log(`Listening on ${localhostURL}`));
@@ -475,7 +475,7 @@ app.get("/hello-world", import("./routes/helloWord.ts"));
 ```
 ```ts
 // routes/helloWorld.ts
-import { Request, Response } from "../src/denoot.ts";
+import { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 export default (req: Request, res: Response) => {
     res.send("Hello World!");
@@ -492,7 +492,7 @@ app.get("/user/logout", logout);
 ```
 ```ts
 // routes/user.ts
-import { Request, Response } from "../../src/denoot.ts";
+import { Request, Response } from "../https://deno.land/x/denoot/mod.ts";
 
 export const login = (req: Request, res: Response) => {
     res.send("Welcome back!");
