@@ -3,7 +3,7 @@
     <h1>
         Denoot — Web Server
     </h1>
-    <img src="https://i.imgur.com/20W1wHg.png" alt="Denoot logo" style="width:200px;" />
+    <img src="https://i.imgur.com/20W1wHg.png" alt="Denoot logo" style="width:200px;" width="200" />
     <p>Denoot is a light weight, high performance, express.js style web server/router for <a href="https://deno.land">Deno</a></p>
 </div>
 
