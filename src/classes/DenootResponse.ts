@@ -86,8 +86,8 @@ export default class DenootResponse {
     /**
      * Makes the response empty. Stack.ts Controlls the resonponse after that
      */
-    setEmpty() {
-        this._empty = true;
+    setEmpty(empty: boolean = true) {
+        this._empty = empty;
         return this;
     }
 
@@ -145,6 +145,9 @@ export default class DenootResponse {
         return this._body.join("");
     }
 
+    /**
+     * If the current response is empty
+     */
     get empty() {
         return this._empty;
     }
