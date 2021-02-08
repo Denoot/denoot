@@ -4,6 +4,7 @@ import { RouteAdders, DenootState, ListeningCallback, RenderEngineCallback, Rout
 import { stackListener } from "./src/stack.ts";
 
 import staticMiddleware from "./src/middleware/static.ts";
+import cors from "./src/middleware/cors.ts";
 
 
 
@@ -79,9 +80,12 @@ export const app = (port: number, hostname?: string, listeningCallback?: Listeni
 
 }
 
-
-
 export default app;
+
+export {
+    cors
+};
+
 
 /**
  * This is extremely infuriating but currently TSC does

@@ -28,6 +28,10 @@
     "test_refactoring": {
       "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_refactoring.ts",
       "desc": "refactoring "
+    },
+    "test_cors": {
+      "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_cors.ts",
+      "desc": "Cors "
     }
   }
 }
