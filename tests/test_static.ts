@@ -5,7 +5,6 @@ const app = Denoot.app(8000, "0.0.0.0", ({ localhostURL }) => console.log(`Liste
 app.static("/public/", {
     folder: "tests",
     autoIndex: true,
-    //index: ".html"
 });
 
 app.get("/lol/{ok}", (req: Denoot.Request, res: Denoot.Response) => {
