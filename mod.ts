@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.85.0/http/server.ts";
 import * as routes from "./src/routing/routes.ts";
 import { RouteAdders, DenootState, ListeningCallback, RenderEngineCallback, RouteStackItem } from "./types/definitions.d.ts";
 import { stackListener } from "./src/stack.ts";
+import * as path from "https://deno.land/std@0.85.0/path/mod.ts";
 
 import staticMiddleware from "./src/middleware/static.ts";
 
@@ -78,6 +79,8 @@ export const app = (port: number, hostname?: string, listeningCallback?: Listeni
     }
 
 }
+
+
 
 export default app;
 

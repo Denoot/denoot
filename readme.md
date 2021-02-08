@@ -337,6 +337,21 @@ app.static("/public", {
     autoIndex: true
 });
 ```
+If you want to write a custom autoIndex page pass a function instead of a boolean
+```ts
+app.static("/public", {
+    folder: "static",
+    autoIndex: async ({ files }: AutoIndexRendererOptions): Promise<string> => {
+        let html = "";
+
+        for(const file of files) {
+            html += `<h2>${await someFunction(file.name)}</h2>`;
+        }
+
+        return html;
+    }
+});
+```
 Enable index files. If you want Denoot to look for an index file upon resolving to a directory, set `options.index` to your file extension for example: `.html` where `index.html` will be served if found inside the directory.
 ```ts
 app.static("/public", {
