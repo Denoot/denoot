@@ -3,13 +3,15 @@ import { Cors, Next, Request, Response } from "../../types/definitions.d.ts";
 interface CorsOptions {
     continue?: boolean,
     referer?: boolean,
-    varyOrigin?: boolean
+    varyOrigin?: boolean,
+    memoize?: boolean
 }
 
 const defaultCorsOptions: CorsOptions = {
     continue: false,
     referer: false,
-    varyOrigin: true
+    varyOrigin: true,
+    memoize: true
 }
 
 function setCorsHeader(res: Response, options: CorsOptions) {
@@ -27,6 +29,7 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
 
     return async (req: Request, res: Response, next: Next) => {
         if (req.method === "OPTIONS") {
+            console.log(memoize);
 
             const origin = req.headers.get(options.referer ? "Referer" : "Origin");
 
@@ -35,32 +38,43 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
                 return next();
             }
 
-            if (memoize.has(origin)) {
+
+            // Get memoized value if memoize is enabled
+            if (options.memoize && memoize.has(origin)) {
                 if (memoize.get(origin)) {
                     setCorsHeader(res,options);
                 }
                 return next();
             }
 
+
+            // Check if origin is allowed
             const allowedOrigin = [
                 Array.isArray(cors) && cors.includes(origin),
                 typeof cors === 'function' && await cors(req, res, origin),
                 typeof cors === 'string' && cors === origin
             ].includes(true)
 
+
+
             if (allowedOrigin) {
                 setCorsHeader(res, options);
             }
 
-            memoize.set(origin, allowedOrigin);
+
+
+            // Add result in Map if memoize is enabled
+            if(options.memoize) {
+                memoize.set(origin, allowedOrigin);
+            }
+
+
 
             if (!options.continue) {
-                return res.setEmpty().end();
-            } else {
-                next();
+                res.setEmpty().end();
             }
-        } else {
-            next();
         }
+
+        next();
     }
 }
