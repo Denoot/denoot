@@ -10,27 +10,15 @@ export default (cors: Cors) => {
             return next();
         }
 
-        if(Array.isArray(cors)) {
-            if(cors.includes(origin)) {
-                res.headers.set("Access-Control-Allow-Origin", "*");
-            }
-            return next();
-        }
+        const allowedOrigin = [
+            Array.isArray(cors)        && cors.includes(origin),
+            typeof cors === 'function' && await cors(req,res,origin),
+            typeof cors === 'string'   && cors === origin
+        ].includes(true)
 
-        if(typeof cors === 'function') {
-            if(await cors(req,res,origin)) {
-                res.headers.set("Access-Control-Allow-Origin", "*");
-            }
-            return next();
+        if(allowedOrigin) {
+            res.headers.set("Access-Control-Allow-Origin", "*");
         }
-        
-        if(typeof cors === 'string') {
-            if(cors === origin) {
-                res.headers.set("Access-Control-Allow-Origin", "*");
-            }
-            return next();
-        }
-        
 
         return next();
     }
