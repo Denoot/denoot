@@ -4,14 +4,16 @@ interface CorsOptions {
     continue?: boolean,
     referer?: boolean,
     varyOrigin?: boolean,
-    memoize?: boolean
+    memoize?: boolean,
+    allMethods?: boolean
 }
 
 const defaultCorsOptions: CorsOptions = {
     continue: false,
     referer: false,
     varyOrigin: true,
-    memoize: true
+    memoize: true,
+    allMethods: false
 }
 
 function setCorsHeader(res: Response, options: CorsOptions) {
@@ -28,7 +30,7 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
     const memoize = new Map<string, boolean>();
 
     return async (req: Request, res: Response, next: Next) => {
-        if (req.method === "OPTIONS") {
+        if (req.method === "OPTIONS" || options.allMethods) {
             console.log(memoize);
 
             const origin = req.headers.get(options.referer ? "Referer" : "Origin");
@@ -44,6 +46,7 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
                 if (memoize.get(origin)) {
                     setCorsHeader(res,options);
                 }
+                res.setEmpty().end();
                 return next();
             }
 
