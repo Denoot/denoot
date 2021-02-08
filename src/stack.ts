@@ -181,9 +181,16 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
 
             }
 
+            clearTimeout(timeout);
+
+            if(res.empty) {
+                return denoReq
+                    .respond({ body: "", headers: res.headers, status: 204 })
+                    .catch(() => void 0);
+            }
+
             const createdBody = res.buffer ?? res.body;
 
-            clearTimeout(timeout);
 
             if (e404 || !createdBody && !(res.getStatus >= 300 && res.getStatus < 400)) {
                 // prompt 404 middleware

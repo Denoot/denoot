@@ -21,6 +21,7 @@ export default class DenootResponse {
     private _buffer?: Deno.File | Uint8Array;
     public _req!: Request;
     private _status: number = 200;
+    private _empty: boolean = false;
 
     /**
      * @internal
@@ -83,6 +84,14 @@ export default class DenootResponse {
 
 
     /**
+     * Makes the response empty. Stack.ts Controlls the resonponse after that
+     */
+    setEmpty() {
+        this._empty = true;
+        return this;
+    }
+
+    /**
      * Send the response as HTML
      * @param value HTML as string
      */
@@ -134,6 +143,10 @@ export default class DenootResponse {
      */
     get body() {
         return this._body.join("");
+    }
+
+    get empty() {
+        return this._empty;
     }
 
     /**
