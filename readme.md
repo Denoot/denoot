@@ -341,15 +341,9 @@ If you want to write a custom autoIndex page pass a function instead of a boolea
 ```ts
 app.static("/public", {
     folder: "static",
-    autoIndex: ({ files }: AutoIndexRendererOptions) => {
-        let html = "";
-
-        for (const { name } of files) {
-            html += `<h2>${name}</h2>`;
-        }
-
-        return html;
-    }
+    autoIndex: (req,res,files) => {
+        res.html(files.map(v => v.name).join("<br>"));
+    },
 });
 ```
 Enable index files. If you want Denoot to look for an index file upon resolving to a directory, set `options.index` to your file extension for example: `.html` where `index.html` will be served if found inside the directory.

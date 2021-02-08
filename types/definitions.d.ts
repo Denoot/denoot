@@ -21,7 +21,7 @@ export type RenderEngineCallback = (filePath: string, options: any) => string | 
 export type RenderEngine = (renderCallback: RenderEngineCallback) => unknown;
 export type StaticCallback = (route: DeclarePath, options: StaticRouteOptions) => unknown;
 export type AllowedParameterTypes = "string" | "number" | "any" | "int";
-export type AutoIndexRenderer = (options: AutoIndexRendererOptions) => Promise<string> | string;
+export type AutoIndexRenderer = (req: Request, res: Response, files: AutoIndexFile[]) => void;
 
 export interface StaticRouteBaseOptions {
     index: string;
@@ -76,11 +76,6 @@ export interface AutoIndexFile {
     isDirectory: boolean,
     isBack: boolean,
     path: string
-}
-
-export interface AutoIndexRendererOptions {
-    url: string, 
-    files: AutoIndexFile[]
 }
 
 

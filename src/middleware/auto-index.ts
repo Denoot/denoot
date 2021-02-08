@@ -2,13 +2,13 @@ import * as path from "https://deno.land/std@0.85.0/path/mod.ts";
 import { walk } from "https://deno.land/std@0.85.0/fs/mod.ts";
 import DenootResponse from "./../classes/DenootResponse.ts";
 import DenootRequest from "./../classes/DenootRequest.ts";
-import { AutoIndexRenderer, AutoIndexFile, AutoIndexRendererOptions } from "./../../types/definitions.d.ts";
+import { AutoIndexRenderer, AutoIndexFile } from "./../../types/definitions.d.ts";
 
 /**
  * Generates autoindex html site
  * @author Fritiof Rusck <fritiof@rusck.se>
  */
-export default async (req: DenootRequest, res: DenootResponse, path: string, renderer: AutoIndexRenderer): Promise<string> => {
+export default async (path: string): Promise<AutoIndexFile[]> => {
     const files: AutoIndexFile[] = [];
 
     for await (const entry of walk(path, { maxDepth: 1 })) {
@@ -20,19 +20,16 @@ export default async (req: DenootRequest, res: DenootResponse, path: string, ren
         });
     }
 
-    return await renderer({
-        url: req.url,
-        files
-    });
+    return files;
 };
 
-export function autoIndexRenderer({ url, files }: AutoIndexRendererOptions) {
+export function autoIndexRenderer(req: DenootRequest, res: DenootResponse, files: AutoIndexFile[]) {
     let html = `
     <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>${url}</title>
+            <title>${req.url}</title>
             <style>
                 body {
                     padding: 0;
@@ -53,7 +50,7 @@ export function autoIndexRenderer({ url, files }: AutoIndexRendererOptions) {
                 }
             </style>
         </head>
-        <body><div class="container"><h1>Index of ${url}</h1><hr><table>
+        <body><div class="container"><h1>Index of ${req.url}</h1><hr><table>
     `;
 
     const sortedFiles = files.sort(({ isDirectory: a, isBack: aB }, { isDirectory: b, isBack: bB }) => {
@@ -83,6 +80,5 @@ export function autoIndexRenderer({ url, files }: AutoIndexRendererOptions) {
 
     html += `</table><hr></div></body></html>`
 
-    return html;
-
+    res.html(html);
 }
