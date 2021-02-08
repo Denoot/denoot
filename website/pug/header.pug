@@ -1,0 +1,12 @@
+
+header
+    .header-inner
+        .header-row
+        nav.header-row.header-row
+            for item of headerItems
+                .header-item
+                    a(href= item.path)
+                        .header-item-inner
+                            .header-item-meta.header-item-name= item.name
+                            if (item.icon)
+                                .header-item-meta.header-item-icon!= item.icon

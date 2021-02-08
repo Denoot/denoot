@@ -50,13 +50,14 @@ const _static = (state: State): StaticCallback => (routes: DeclarePath, options:
         const parsedFilePath = path.resolve(getPath(options.folder), "./" + base.substr(_path.length + 1));
         const stat = await Deno.stat(parsedFilePath).catch(() => null);
 
+        
         if (!stat || (stat.isDirectory && !options.autoIndex && !options.index)) {
-            res.setError403().end();
+            res.setError404().end();
 
             return next();
         }
         else if (stat.isFile) {
-            ; (await res.sendFile(parsedFilePath)).end();
+            (await res.sendFile(parsedFilePath)).end();
 
             return next();
         }
@@ -83,8 +84,9 @@ const _static = (state: State): StaticCallback => (routes: DeclarePath, options:
         );
 
         // found index file?
+
         if (index) {
-            ; (await res.sendFile(path.resolve(parsedFilePath, index.name))).end();
+            (await res.sendFile(path.resolve(parsedFilePath, index.name))).end();
 
             return next();
         } else if (stat.isDirectory && !options.autoIndex) {

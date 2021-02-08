@@ -1,0 +1,8 @@
+head
+    include static.html
+    link(rel="stylesheet", href="/static/sass/global.css")
+body
+    include header
+    main
+        .main-inner
+            h1!= view.markup.content

@@ -1,0 +1,88 @@
+@import "theme";
+
+body, html {
+    color: $code-bg;
+    padding: 0;
+    margin: 0;
+    background: $inverse-background-color;
+    font-family: 'Lato', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+header {
+    box-shadow: 0 0 10px -3px #000;
+    background: $background-color-2;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    .header-inner {
+        max-width: $constrict-wide;
+        width: 100%;
+        display: flex;
+        
+        .header-row {
+            flex: none;
+        }
+
+        nav.header-row {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            
+        }
+    }
+
+    .header-item {
+        line-height: 1em;
+        a {
+            transition: color .1s ease-in;
+            color: $color;
+            text-decoration: none;
+        }
+        &:hover a {
+            color: #fff;
+        }
+        .header-item-inner {
+            padding: 20px 20px;
+            color: inherit;
+            display: flex;
+        }
+        .header-item-meta {
+            flex: none;
+            height: 1em;
+            position: relative;
+            svg {
+                //transform: translateY(.11em);
+                height: 100%;
+                position: relative;
+            }
+        }
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    //font-weight: 400;
+}
+
+code.hljs {
+    background: $code-bg;
+    padding: 25px 20px;
+    border-radius: 1.5rem;
+}
+
+main {
+    .main-inner {
+        margin: 0 auto;
+        max-width: $constrict-wide;
+    }
+}
+
+
+hr {
+    background: $code-bg;
+    border: .5px solid transparent;
+}

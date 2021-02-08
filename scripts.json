@@ -28,6 +28,13 @@
     "test_refactoring": {
       "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_refactoring.ts",
       "desc": "refactoring "
+    },
+    "website": {
+      "cmd": "deno run --allow-write --allow-net --unstable --allow-read ./website/serve.ts",
+      "desc": "refactoring "
     }
+  },
+  "watcher": {
+    "exts": ["js", "jsx", "ts", "tsx", "json", "pug", "md"]
   }
 }

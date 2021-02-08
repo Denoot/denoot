@@ -1,0 +1,49 @@
+body, html {
+  color: #ccc;
+  padding: 0;
+  margin: 0;
+  background: #2d2d2d;
+  font-family: 'Lato', sans-serif;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+header {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+header .header-inner {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+header .header-inner .header-row {
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+}
+
+header .header-inner nav.header-row {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+header .header-item a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+header .header-item .header-item-inner {
+  padding: 20px;
+  color: inherit;
+}
+/*# sourceMappingURL=index.css.map */
