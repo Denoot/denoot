@@ -78,7 +78,7 @@ const matchRequestWithRoute = (req: Request, route: RouteStackItem) => {
                 error: false
             };
 
-            // type checking for varibles
+            // type checking for URL parameter
             switch (declaredPart.variable.type) {
                 case "any":
                     incomingParameter.parsed = incomingPart;

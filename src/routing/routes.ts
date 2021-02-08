@@ -46,7 +46,7 @@ export const createParts = (path: string) => {
 }
 
 export const extractVariable = (part: string): ({ name: string, type: AllowedParameterTypes } | null) => {
-    // First check to se if there's a : in the varible.
+    // First check to se if there's a : in the variable.
     const isTypeVariable = part.match(/(?<=({.*))(:)(?=(.*}))/);
     const paramTypes: AllowedParameterTypes[] = ["string", "number", "any", "int"];
 
@@ -81,8 +81,8 @@ const createPath = (path: string): RoutePath => {
     if (!path.startsWith("/")) {
         throw new Error("Path must begin with forward slash (/)");
     }
-    // Since args can include {myVar: numver} and white space is allowed there
-    // We remvoe all occurences of those first
+    // Since args can include {myVar: number} and white space is allowed there
+    // We remove all occurrences of those first
     else if (path.replace(/(?<=({.*))\s*:\s*(?=(.*}))/, "").match(/\s/)) {
         throw new Error("Path cannot include white space. If you must have white space URI encode the path");
     }
@@ -97,8 +97,6 @@ const createPath = (path: string): RoutePath => {
 
             return {
                 part,
-                // a nullish coalescing expression does not work as a
-                // type guard here. https://stackoverflow.com/a/61233021/13188385
                 variable: extractedVariable
             }
         })
