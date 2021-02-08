@@ -228,7 +228,7 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
     ); // Will output: You searched for: "apples" and sorted desc
 });
 ```
-**Note:** it's possible to set query using `Request.params.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
+**Note:** it's possible to set query using `Request.query.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
 
 
 ## Cookies
@@ -374,7 +374,7 @@ app.get("/posts/all", (req: Denoot.Request, res: Denoot.Response)) => {
 
 // This route will not be reached! Since res.end() was called earlier
 app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.send(posts[ req.params.get("postID") ]);
+    res.send(posts[ req.params.get("postID").parsed ]);
 });
 ```
 **Note:** If you have a lot of routes or very expensive routes/middleware it's considered best practice to use `res.end()` to prevent Denoot from checking further routes. 
@@ -426,7 +426,7 @@ app.render(handle.renderView.bind(handle));
 app.get("/user/{username}", async (req: Denoot.Request, res: Denoot.Response) => {
     // assumes ./views/user.hbs and ./views/layouts.main.hbs exists. See https://deno.land/x/handlebars
     await res.render("user", {
-        firstname: req.params.get("username"),
+        firstname: req.params.get("username").parsed,
         lastname: "Doe"
     });
 });
