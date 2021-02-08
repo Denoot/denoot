@@ -1,3 +1,27 @@
 {
-    "order": ["test", "getting_started", "cors", "middlewares", "sending_response_json","sending_response_html"]
+    "order": [
+        "intruduction",
+        "example",
+        "best_practices",
+        "security_concerns",
+        "contribute",
+
+        "sending_response",
+        "http_methods",
+        "url_parameters",
+        "wildcard_routing",
+        "multiple_routes",
+        "static_routing",
+        "redirect",
+        "middlewares",
+        "renderer",
+
+        "cookies",
+        "headers",
+        "end_response",
+        "body",
+        "status_code",
+
+        "cors"
+    ]
 }
