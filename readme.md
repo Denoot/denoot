@@ -187,13 +187,33 @@ app.map("get", "put", "patch")("/path", callback);
 [⬆️ Table of Contents ⬆️](#table-of-contents)
 
 
-Denoot organizes url parameters as a `Map<string, string>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`
+Denoot organizes url parameters as a `Map<string, Param>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`
 ```ts
-app.get("/users/{userID}", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.send("User ID: " + req.params.get("userID"));
+interface Param {
+    name: string, // name of param
+    type: "string" | "number" | "any" | "int", // type of the param
+    raw: string, // raw input
+    parsed: number | string | null, // parsed input
+    error: boolean  // boolean to show if there was a parsing error
+}
+
+app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) => {
+    if(req.params.get("userID").error´) {
+        // Oh no userID couldn't be parsed
+        return res.send("That's not a valid user id");
+    }
+
+    res.send("User ID: " + req.params.get("userID").parsed);
 });
 ```
-**Note:** it's possible to set params using `req.params.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
+If you don't want to define a type opt-out of writing a type, denoot will assume the param is of type string
+```ts
+app.get("/users/{name}", (req: Denoot.Request, res: Denoot.Response)) => {
+    res.send("Your name is of type: " + req.params.get("userID").type); // Will be string
+});
+```
+
+**Note:** it's possible to set params using `req.params.set(key: string, value: Param)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
 
 ## URL Search Query
 [⬆️ Table of Contents ⬆️](#table-of-contents)
@@ -522,7 +542,7 @@ app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
 });
 
 app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => {
-    const product = products[req.params.get("productID")];
+    const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
 ```
