@@ -1,5 +1,5 @@
 import * as HTTP from "https://deno.land/std@0.85.0/http/server.ts";
-import { Response, Request, RouteStackItem, AllMethods, RoutePath, RouteCallback, DeclareRouteOptions, AllMethod, RouteBaseCallback } from "../types/definitions.d.ts";
+import { Response, Request, RouteStackItem, AllMethods, RoutePath, RouteCallback, DeclareRouteOptions, AllMethod, RouteBaseCallback, Param, AllowedParameterTypes } from "../types/definitions.d.ts";
 import { createParts } from "./routing/routes.ts";
 import DenootResponse from "./classes/DenootResponse.ts";
 import DenootRequest from "./classes/DenootRequest.ts";
@@ -70,7 +70,43 @@ const matchRequestWithRoute = (req: Request, route: RouteStackItem) => {
         if (isWildcard(declaredPart.part)) return true;
 
         if (declaredPart.variable && incomingPart) {
-            req.params.set(declaredPart.variable.name, incomingPart);
+            const incomingParameter: Param = {
+                name: declaredPart.variable.name,
+                type: declaredPart.variable.type as AllowedParameterTypes,
+                raw: incomingPart,
+                parsed: null,
+                error: false
+            };
+
+            // type checking for URL parameter
+            switch (declaredPart.variable.type) {
+                case "any":
+                    incomingParameter.parsed = incomingPart;
+                    break;
+                case "string":
+                    incomingParameter.parsed = incomingPart;
+                    break;
+                case "number":
+                    const parsedNumber = parseFloat(incomingPart);
+                    if (isNaN(parsedNumber)) {
+                        incomingParameter.error = true;
+                    } else {
+                        incomingParameter.parsed = parsedNumber;
+                    }
+                    break;
+                case "int":
+                    const parsedInt = parseInt(incomingPart);
+                    if (isNaN(parsedInt)) {
+                        incomingParameter.error = true;
+                    } else {
+                        incomingParameter.parsed = parsedInt;
+                    }
+                    break;
+            }
+
+
+            req.params.set(declaredPart.variable.name, incomingParameter);
+
             continue matchDeclaredPathParts;
         }
         else if (declaredPart.part === incomingPart)

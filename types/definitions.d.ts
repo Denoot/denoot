@@ -20,6 +20,7 @@ export type DeclareRoute = ((path: DeclarePath | RouteCallback, callback?: Route
 export type RenderEngineCallback = (filePath: string, options: any) => string | Promise<string>;
 export type RenderEngine = (renderCallback: RenderEngineCallback) => unknown;
 export type StaticCallback = (route: DeclarePath, options: StaticRouteOptions) => unknown;
+export type AllowedParameterTypes = "string" | "number" | "any" | "int";
 
 export interface StaticRouteBaseOptions {
     index: string;
@@ -32,12 +33,21 @@ export interface StaticRouteOptions {
     autoIndex?: boolean;
 }
 
+export interface Param {
+    name: string,
+    type: AllowedParameterTypes,
+    raw: string,
+    parsed: number | string | null,
+    error: boolean
+}
+
 export interface RoutePath {
     original: string;
     params: {
         part: string;
         variable: null | {
-            name: string;
+            name: string,
+            type: string
         }
     }[]
 }

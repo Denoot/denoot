@@ -1,5 +1,5 @@
 import { declareStackItem } from "../stack.ts";
-import { AllMethods, RouteCallback, DeclarePath, RoutePath, DeclareRouteOptions, DeclareRoute, Methods, MethodsLowerCase } from "../../types/definitions.d.ts";
+import { AllMethods, RouteCallback, DeclarePath, RoutePath, DeclareRouteOptions, DeclareRoute, Methods, MethodsLowerCase, AllowedParameterTypes } from "../../types/definitions.d.ts";
 
 import { State } from "../../mod.ts";
 
@@ -25,7 +25,6 @@ export const trailingSlash = (path: string): boolean => {
 export const trailingWildcard = (path: string): boolean => {
 
     return !!path.match(/\*$/)?.[0]
-
 }
 
 export const createParts = (path: string) => {
@@ -37,7 +36,8 @@ export const createParts = (path: string) => {
     const parsedPathName = url
         .pathname
         .replace(/%7B/g, "{")
-        .replace(/%7D/g, "}");
+        .replace(/%7D/g, "}")
+        .replace(/%20/g, " ");
 
     const parsedPath = serializePath(parsedPathName);
 
@@ -45,10 +45,35 @@ export const createParts = (path: string) => {
 
 }
 
-export const extractVariable = (part: string) => {
+export const extractVariable = (part: string): ({ name: string, type: AllowedParameterTypes } | null) => {
+    // First check to se if there's a : in the variable.
+    const isTypeVariable = part.match(/(?<=({.*))(:)(?=(.*}))/);
+    const paramTypes: AllowedParameterTypes[] = ["string", "number", "any", "int"];
 
-    return part.match(/(?<={)(.*)(?=})/gm);
+    if (isTypeVariable) {
+        // Since isTypeVariable guarantees a match we can cast this to any,
+        const varName: string = (part.match(/(?<={)(.*)(?=(:.*}))/gm) as any)[0].trim();
+        const varType: string = (part.match(/(?<=({.*:))(.*)(?=})/gm) as any)[0].trim();
 
+        if (!(paramTypes as any).includes(varType)) {
+            throw new Error(`Type ${varType} is not a valid parameter type`);
+        }
+
+        return {
+            name: varName,
+            type: varType as AllowedParameterTypes
+        }
+    } else {
+        const varName = part.match(/(?<={)(.*)(?=})/gm);
+
+        if (varName === null)
+            return null
+
+        return {
+            name: varName[0],
+            type: "string"
+        };
+    }
 }
 
 const createPath = (path: string): RoutePath => {
@@ -56,7 +81,9 @@ const createPath = (path: string): RoutePath => {
     if (!path.startsWith("/")) {
         throw new Error("Path must begin with forward slash (/)");
     }
-    else if (path.match(/\s/)) {
+    // Since args can include {myVar: number} and white space is allowed there
+    // We remove all occurrences of those first
+    else if (path.replace(/(?<=({.*))\s*:\s*(?=(.*}))/, "").match(/\s/)) {
         throw new Error("Path cannot include white space. If you must have white space URI encode the path");
     }
 
@@ -70,11 +97,7 @@ const createPath = (path: string): RoutePath => {
 
             return {
                 part,
-                // a nullish coalescing expression does not work as a
-                // type guard here. https://stackoverflow.com/a/61233021/13188385
-                variable: extractedVariable !== null ? {
-                    name: extractedVariable[0]
-                } : null
+                variable: extractedVariable
             }
         })
     }
@@ -120,6 +143,6 @@ export const any = (state: State) => addRoute(state, ["_ALL"]);
 
 export const map = (state: State) =>
     (...methods: (Methods | MethodsLowerCase)[]) =>
-    addRoute(state, methods.map(method => method.toUpperCase()) as Methods[]);
+        addRoute(state, methods.map(method => method.toUpperCase()) as Methods[]);
 
 export const use = (state: State) => addRoute(state, ["_ALL"], { middleware: true });

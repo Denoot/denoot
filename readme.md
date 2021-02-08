@@ -187,13 +187,37 @@ app.map("get", "put", "patch")("/path", callback);
 [⬆️ Table of Contents ⬆️](#table-of-contents)
 
 
-Denoot organizes url parameters as a `Map<string, string>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`
-```ts
-app.get("/users/{userID}", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.send("User ID: " + req.params.get("userID"));
+Denoot organizes url parameters as a `Map<string, Param>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`
+
+```
+app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) => {
+    if(req.params.get("userID").error) {
+        // Oh no! userID couldn't be parsed
+        return res.send("That's not a valid user id");
+    }
+
+    res.send("User ID: " + req.params.get("userID").parsed);
 });
 ```
-**Note:** it's possible to set params using `req.params.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
+If you don't want to define a type opt-out of writing a type, Denoot will assume the param is of type string
+```ts
+app.get("/users/{name}", (req: Denoot.Request, res: Denoot.Response)) => {
+    res.send("Your name is of type: " + req.params.get("userID").type); // Will be string
+});
+```
+
+The `Param` type looks like this:
+```ts
+interface Param {
+    name: string, // name of param
+    type: "string" | "number" | "any" | "int", // type of the param
+    raw: string, // raw input
+    parsed: number | string | null, // parsed input
+    error: boolean  // boolean to show if there was a parsing error
+}
+```
+
+**Note:** it's possible to set params using `req.params.set(key: string, value: Param)` however this is not recommended and is considered bad practice. Instead set custom variables using `req.variables.set("name", "value")`.
 
 ## URL Search Query
 [⬆️ Table of Contents ⬆️](#table-of-contents)
@@ -208,7 +232,7 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
     ); // Will output: You searched for: "apples" and sorted desc
 });
 ```
-**Note:** it's possible to set query using `Request.params.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
+**Note:** it's possible to set query using `Request.query.set(key: string, value: string)` however this is not recommended and is considered bad practice. Instead define custom properties on `Request`.
 
 
 ## Cookies
@@ -354,7 +378,7 @@ app.get("/posts/all", (req: Denoot.Request, res: Denoot.Response)) => {
 
 // This route will not be reached! Since res.end() was called earlier
 app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.send(posts[ req.params.get("postID") ]);
+    res.send(posts[ req.params.get("postID").parsed ]);
 });
 ```
 **Note:** If you have a lot of routes or very expensive routes/middleware it's considered best practice to use `res.end()` to prevent Denoot from checking further routes. 
@@ -406,7 +430,7 @@ app.render(handle.renderView.bind(handle));
 app.get("/user/{username}", async (req: Denoot.Request, res: Denoot.Response) => {
     // assumes ./views/user.hbs and ./views/layouts.main.hbs exists. See https://deno.land/x/handlebars
     await res.render("user", {
-        firstname: req.params.get("username"),
+        firstname: req.params.get("username").parsed,
         lastname: "Doe"
     });
 });
@@ -522,7 +546,7 @@ app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
 });
 
 app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => {
-    const product = products[req.params.get("productID")];
+    const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
 ```
