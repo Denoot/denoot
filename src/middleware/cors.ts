@@ -31,7 +31,6 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
 
     return async (req: Request, res: Response, next: Next) => {
         if (req.method === "OPTIONS" || options.allMethods) {
-            console.log(memoize);
 
             const origin = req.headers.get(options.referer ? "Referer" : "Origin");
 

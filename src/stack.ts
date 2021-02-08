@@ -172,8 +172,6 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
 
                 const match = matchRequestWithRoute(req, routeStackItem);
 
-                console.log(match);
-
                 if (!match) continue searchStack;
                 else if (e404) e404 = false;
 
