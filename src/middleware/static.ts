@@ -20,7 +20,7 @@ import {
     trailingWildcard,
 } from "../routing/routes.ts";
 import { State } from "../../mod.ts";
-import autoIndex, { autoIndexRenderer } from "./autoIndex.ts";
+import autoIndex, { autoIndexRenderer } from "./auto-index.ts";
 
 // legacy
 // TODO cleanup
@@ -108,9 +108,10 @@ const _static = (state: State): StaticCallback =>
                     return next();
                 }
 
-                const html = await autoIndex(req, res, parsedFilePath, typeof options.autoIndex === 'function' ? options.autoIndex : autoIndexRenderer);
+                const files = await autoIndex(parsedFilePath);
+                const renderer = typeof options.autoIndex === 'function' ? options.autoIndex : autoIndexRenderer;
 
-                res.html(html);
+                renderer(req, res, files);
 
                 return next();
             };
