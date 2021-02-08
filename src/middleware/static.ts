@@ -20,7 +20,7 @@ import {
     trailingWildcard,
 } from "../routing/routes.ts";
 import { State } from "../../mod.ts";
-import autoIndex, { autoIndexRenderer } from "./auto-index.ts";
+import autoIndex, { autoIndexRenderer } from "./autoIndex.ts";
 
 // legacy
 // TODO cleanup
