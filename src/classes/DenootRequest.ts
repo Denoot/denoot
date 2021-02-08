@@ -1,5 +1,5 @@
 import { ServerRequest } from "https://deno.land/std@0.85.0/http/server.ts";
-import { AllMethods, RenderEngineCallback } from "../../types/definitions.d.ts";
+import { AllMethods, RenderEngineCallback, Param } from "../../types/definitions.d.ts";
 import { State } from "../../mod.ts";
 import { parseCookies } from "../cookieParser/cookieParser.ts";
 import { decode } from "https://deno.land/std@0.85.0/encoding/utf8.ts";
@@ -13,7 +13,7 @@ class DenootRequest {
 
     private _url: string = "";
     private _method: AllMethods;
-    private _params: Map<string, string> = new Map();
+    private _params: Map<string, Param> = new Map();
     private _query: Map<string, string> = new Map();
     private _variables: Map<string, any> = new Map();
     private _headers: Headers;
