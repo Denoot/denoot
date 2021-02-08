@@ -4,5 +4,8 @@ head
 body
     include header
     main
+        include sidebar
         .main-inner
-            h1!= view.markup.content
+            .main-content
+                article
+                    |!{view.markup.content}

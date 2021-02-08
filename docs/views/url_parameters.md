@@ -1,5 +1,4 @@
-# Routing
-## URL Parameters
+# URL Parameters
 
 
 Denoot organizes url parameters as a `Map<string, Param>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`

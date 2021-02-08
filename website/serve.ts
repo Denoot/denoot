@@ -9,9 +9,6 @@ app.static("/static", {
     autoIndex: true
 })
 
-
-console.log(views)
-
 for (const view of views) {
 
     app.get(view.url, (req: Denoot.Request, res: Denoot.Response) => {

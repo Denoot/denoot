@@ -1,5 +1,4 @@
-# Routing
-## Sending response
+# HTTP Methods
 All supported routing [HTTP methods](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods).
 ```ts
 app.get("/path", callback);

@@ -1,10 +1,8 @@
 {
     "order": [
-        "intruduction",
+        "introduction",
         "example",
-        "best_practices",
-        "security_concerns",
-        "contribute",
+        
 
         "sending_response",
         "http_methods",
@@ -13,7 +11,7 @@
         "multiple_routes",
         "static_routing",
         "redirect",
-        "middlewares",
+        "middleware",
         "renderer",
 
         "cookies",
@@ -21,6 +19,11 @@
         "end_response",
         "body",
         "status_code",
+
+        "best_practices",
+
+        "contribute",
+        "security_concerns",
 
         "cors"
     ]

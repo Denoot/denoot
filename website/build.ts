@@ -3,95 +3,118 @@ import { Marked } from "https://deno.land/x/markdown/mod.ts";
 import { Parsed } from "https://deno.land/x/markdown@v2.0.0/src/interfaces.ts";
 import { compileFile } from "https://raw.githubusercontent.com/lumeland/pug/master/mod.js";
 import icons from "./icons.ts";
+import {
+  DOMParser,
+  Element,
+} from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 export interface View {
-    path: string;
-    name: string;
-    htmlFilePath: string;
-    markup: Parsed;
-    strippedName: string;
-    url: string;
+  path: string;
+  name: string;
+  htmlFilePath: string;
+  markup: Parsed;
+  strippedName: string;
+  url: string;
+  title: string;
+  titles: {
+      content: string;
+      tagName: string;
+      fragment: string;
+  }[]
 }
 
 let views: Array<View> = [];
 
 const headerItems = [
-    {
-        name: "Home",
-        path: "#"
-    },
-    {
-        name: "Getting started",
-        path: "#"
-    },
-    {
-        name: "Docs",
-        path: "#"
-    },
-    {
-        name: "About",
-        path: "#"
-    },
-    {
-        name: "",
-        icon: icons.gitHub,
-        path: "#"
-    }
+  {
+    name: "Home",
+    path: "#",
+  },
+  {
+    name: "Getting started",
+    path: "#",
+  },
+  {
+    name: "Docs",
+    path: "#",
+  },
+  {
+    name: "About",
+    path: "#",
+  },
+  {
+    name: "",
+    icon: icons.gitHub,
+    path: "#",
+  },
 ];
 const decoder = new TextDecoder("utf-8");
 
-const { order } = JSON.parse(decoder.decode(await Deno.readFile("./docs/docs.json"))) as ({
-    order: string[]
+const { order } = JSON.parse(
+  decoder.decode(await Deno.readFile("./docs/docs.json")),
+) as ({
+  order: string[];
 });
 
+for await (
+  const { path, name } of walk("./docs/views", { includeDirs: false })
+) {
+  const strippedName = name.replace(".md", "");
 
-for await (const { path, name } of walk("./docs/views", { includeDirs: false })) {
+  if (!order.includes(strippedName)) continue;
 
-    const strippedName = name.replace(".md", "");
+  const url = "/" + urlIfy(strippedName);
+  const markdown = decoder.decode(await Deno.readFile(path));
+  const markup = Marked.parse(markdown);
 
-    if (!order.includes(strippedName)) continue;
+  const doc = new DOMParser().parseFromString(markup.content, "text/html")!;
 
-    const url = "/" + urlIfy(strippedName);
-    const markdown = decoder.decode(await Deno.readFile(path));
-    const markup = Marked.parse(markdown);
+  const title = doc.querySelector("h1")!;
 
-    const htmlFilePath = `./website/dist/${name}.html`;
+  if (!title) {
+    throw `${path} does not contain a h1 tag`
+  }
 
-    views.push(JSON.parse(JSON.stringify({
-        path,
-        name,
-        markup,
-        htmlFilePath,
-        strippedName,
-        url
-    })));
+  const htmlFilePath = `./website/dist/${name}.html`;
 
+  views.push(JSON.parse(JSON.stringify({
+    title: title.textContent,
+    titles: [...doc.querySelectorAll("[id]")].map(el => {
+        const element = el as Element;
+
+        return {
+            content: el.textContent,
+            tagName: el.nodeName,
+            fragment: element.attributes.id
+        }
+    }),
+    path,
+    name,
+    markup,
+    htmlFilePath,
+    strippedName,
+    url,
+  })));
 }
 
-
-views = views.sort((x, y) => order.indexOf(x.strippedName) - order.indexOf(y.strippedName))
+views = views.sort((x, y) =>
+  order.indexOf(x.strippedName) - order.indexOf(y.strippedName)
+);
 
 for (const view of views) {
+  const compiled = await compileFile("./website/pug/base.pug", {})({
+    views,
+    view,
+    headerItems,
+  });
 
-    const compiled = await compileFile("./website/pug/base.pug", {})({
-        views,
-        view,
-        headerItems
-    });
-
-
-    await Deno.writeTextFile(view.htmlFilePath, compiled);
-
+  await Deno.writeTextFile(view.htmlFilePath, compiled);
 }
-
-
 
 export default views;
 
 function urlIfy(str: string) {
-
-    return str
-        .replace(/[ _-]/g, "-")
-        .toLowerCase();
-
+  return str
+    .replace(/[ _-]/g, "-")
+    .toLowerCase();
 }

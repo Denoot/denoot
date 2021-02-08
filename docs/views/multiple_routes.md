@@ -1,5 +1,5 @@
-# Routing
-## Multiple Paths/Routes
+
+# Multiple Paths/Routes
 
 Denoot accepts either a string or an array of strings as paths.
 ```ts
