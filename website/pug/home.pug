@@ -1,0 +1,22 @@
+head
+    include head
+    title= "Denoot"
+    include static.html
+    link(rel="stylesheet", href="/static/sass/global.css")
+    link(rel="stylesheet", href="/static/sass/home.css")
+body
+    include header
+    main
+        .main-wrapper
+            .main-extend
+                .hero
+                    .hero-content
+                        h1 
+                            |Denoot
+                        p 
+                            |Light-weight, high performance web server for Deno
+
+            .main-inner
+                .main-content
+                    article
+                        |!{view.markup.content}

@@ -1,6 +1,5 @@
-# Routing
-## Render Templates
-### Handlebars Example
+# Render Templates
+## Handlebars Example
 Simple handlebars for Deno example.
 ```ts
 import * as Denoot from "https://deno.land/x/denoot/mod.ts";
@@ -22,7 +21,7 @@ app.get("/user/{username}", async (req: Denoot.Request, res: Denoot.Response) =>
 See [handlebars for Deno documentation](https://deno.land/x/handlebars) and [handlebars.js guide](https://handlebarsjs.com/guide/) for more information.
 
 
-### Custom Rendering Engine
+## Custom Rendering Engine
 Denoot supports rendering templates by declaring a template rendering callback.
 ```ts
 const renderer: Denoot.RenderEngineCallback;
@@ -30,7 +29,9 @@ app.render(renderer);
 ```
 You can easily use any template engine you want by satisfying the following callback type.
 ```ts
-type RenderEngineCallback = (filePath: string, options: any) => string | Promise<string>;
+type RenderEngineCallback =
+    (filePath: string, options: any) =>
+        string | Promise<string>;
 ```
 After you've declared your rendering engine callback you gain access to `res.render`. This is merely an abstraction for calling the defined rendering engine callback.
 ```ts

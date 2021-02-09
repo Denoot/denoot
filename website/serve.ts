@@ -18,3 +18,7 @@ for (const view of views) {
     });
 
 }
+
+app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+    return res.sendFile("./website/dist/front-page.html");
+});

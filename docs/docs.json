@@ -1,23 +1,24 @@
 {
     "order": [
-        "introduction",
-        "example",
+        "getting_started",
+        "creating_denoot_app",
         
-
+        "middleware",
         "sending_response",
         "http_methods",
         "url_parameters",
         "wildcard_routing",
         "multiple_routes",
         "static_routing",
+        "request_response",
         "redirect",
-        "middleware",
-        "renderer",
+        
+        "render_template",
 
         "cookies",
         "headers",
         "end_response",
-        "body",
+        
         "status_code",
 
         "best_practices",

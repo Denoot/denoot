@@ -4,117 +4,138 @@ import { Parsed } from "https://deno.land/x/markdown@v2.0.0/src/interfaces.ts";
 import { compileFile } from "https://raw.githubusercontent.com/lumeland/pug/master/mod.js";
 import icons from "./icons.ts";
 import {
-  DOMParser,
-  Element,
+    DOMParser,
+    Element,
 } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 export interface View {
-  path: string;
-  name: string;
-  htmlFilePath: string;
-  markup: Parsed;
-  strippedName: string;
-  url: string;
-  title: string;
-  titles: {
-      content: string;
-      tagName: string;
-      fragment: string;
-  }[]
+    path: string;
+    name: string;
+    htmlFilePath: string;
+    markup: Parsed;
+    strippedName: string;
+    url: string;
+    title: string;
+    titles: {
+        content: string;
+        tagName: string;
+        fragment: string;
+    }[];
 }
 
 let views: Array<View> = [];
 
 const headerItems = [
-  {
-    name: "Home",
-    path: "#",
-  },
-  {
-    name: "Getting started",
-    path: "#",
-  },
-  {
-    name: "Docs",
-    path: "#",
-  },
-  {
-    name: "About",
-    path: "#",
-  },
-  {
-    name: "",
-    icon: icons.gitHub,
-    path: "#",
-  },
+    {
+        name: "Home",
+        path: "/",
+    },
+    {
+        name: "Getting started",
+        path: "/getting-started",
+    },
+    {
+        name: "Docs",
+        path: "/creating-denoot-app",
+    },
+    {
+        name: "About",
+        path: "#",
+    },
+    {
+        name: "",
+        icon: icons.gitHub,
+        path: "#",
+    },
 ];
 const decoder = new TextDecoder("utf-8");
 
 const { order } = JSON.parse(
-  decoder.decode(await Deno.readFile("./docs/docs.json")),
+    decoder.decode(await Deno.readFile("./docs/docs.json")),
 ) as ({
-  order: string[];
+    order: string[];
 });
 
 for await (
-  const { path, name } of walk("./docs/views", { includeDirs: false })
+    const { path, name } of walk("./docs/views", { includeDirs: false })
 ) {
-  const strippedName = name.replace(".md", "");
+    const strippedName = name.replace(".md", "");
 
-  if (!order.includes(strippedName)) continue;
+    if (!order.includes(strippedName)) continue;
 
-  const url = "/" + urlIfy(strippedName);
-  const markdown = decoder.decode(await Deno.readFile(path));
-  const markup = Marked.parse(markdown);
+    const url = "/" + urlIfy(strippedName);
+    const markdown = decoder.decode(await Deno.readFile(path));
+    const markup = Marked.parse(markdown);
 
-  const doc = new DOMParser().parseFromString(markup.content, "text/html")!;
+    const doc = new DOMParser().parseFromString(markup.content, "text/html")!;
 
-  const title = doc.querySelector("h1")!;
+    const title = doc.querySelector("h1")!;
 
-  if (!title) {
-    throw `${path} does not contain a h1 tag`
-  }
+    if (!title) {
+        throw `${path} does not contain a h1 tag`;
+    }
 
-  const htmlFilePath = `./website/dist/${name}.html`;
+    const htmlFilePath = `./website/dist/${name}.html`;
 
-  views.push(JSON.parse(JSON.stringify({
-    title: title.textContent,
-    titles: [...doc.querySelectorAll("[id]")].map(el => {
-        const element = el as Element;
+    views.push(JSON.parse(JSON.stringify({
+        title: title.textContent,
+        titles: [...doc.querySelectorAll("[id]")].map((el) => {
+            const element = el as Element;
 
-        return {
-            content: el.textContent,
-            tagName: el.nodeName,
-            fragment: element.attributes.id
-        }
-    }),
-    path,
-    name,
-    markup,
-    htmlFilePath,
-    strippedName,
-    url,
-  })));
+            return {
+                content: el.textContent,
+                tagName: el.nodeName,
+                fragment: element.attributes.id,
+            };
+        }),
+        path,
+        name,
+        markup,
+        htmlFilePath,
+        strippedName,
+        url,
+    })));
 }
 
 views = views.sort((x, y) =>
-  order.indexOf(x.strippedName) - order.indexOf(y.strippedName)
+    order.indexOf(x.strippedName) - order.indexOf(y.strippedName)
 );
 
 for (const view of views) {
-  const compiled = await compileFile("./website/pug/base.pug", {})({
-    views,
-    view,
-    headerItems,
-  });
-
-  await Deno.writeTextFile(view.htmlFilePath, compiled);
+    
+    await buildPage(view.htmlFilePath, "./website/pug/base.pug", {
+        views,
+        view,
+        headerItems,
+    });
+    
 }
 
-export default views;
 
 function urlIfy(str: string) {
-  return str
-    .replace(/[ _-]/g, "-")
-    .toLowerCase();
+    return str
+        .replace(/[ _-]/g, "-")
+        .toLowerCase();
 }
+
+
+
+// Generate front page
+await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
+    headerItems,
+    view: views.find(view => view.title === "Getting Started")
+});
+
+
+
+/**
+ * Generates HTML from pug
+ */
+async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
+    const compiled = await compileFile(pugjsTemplate, {})(options ?? {});
+
+    await Deno.writeTextFile(htmlOutput, compiled);
+}
+
+
+export default views;

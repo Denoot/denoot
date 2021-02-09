@@ -7,6 +7,7 @@ html {
     margin: 0;
     background: $inverse-background-color;
     font-family: "Lato", sans-serif;
+    scroll-behavior: smooth;
 }
 
 * {
@@ -23,6 +24,7 @@ header {
         max-width: $constrict-wide;
         width: 100%;
         display: flex;
+        
 
         .header-row {
             flex: none;
@@ -31,7 +33,7 @@ header {
         nav.header-row {
             flex: 1;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
         }
     }
 
@@ -90,7 +92,7 @@ p {
 
 code {
     $padding: .3em;
-    &::before {
+    &::after {
         content: "";
         position: absolute;
         top: 50%;
@@ -108,11 +110,21 @@ code {
     color: $color;
     position: relative;
     z-index: 2;
+
+    &.lang-sh {
+        &::before {
+            content: "$ ";
+            user-select: none;
+            pointer-events: none;
+            color: lightcoral;
+            opacity: .7;
+        }
+    }
 }
 pre {
     $padding: 1rem;
     padding: 0;
-    margin: 40px 0;
+    margin: 30px 0;
     position: relative;
     code.hljs {
         $padding: 1rem;
@@ -125,11 +137,11 @@ pre {
         margin: 0;
         width: calc(100% + #{$padding * 2});
         transform: translateX($padding * -1);
-        &::before {
+        &::after {
             content: unset
         }
     }
-    &::before {
+    &::after {
         content: "";
         position: absolute;
         top: 50%;
@@ -146,7 +158,6 @@ pre {
 
 
 $sidebar-padding: 20px;
-$sidebar-width: 300px;
 $side-bar-gap: 40px;
 $total-sidebar-width: $sidebar-width + $sidebar-padding * 2 + $side-bar-gap;
 
@@ -154,6 +165,7 @@ main {
     transform: translateX(0);
     justify-content: center;
     display: flex;
+    width: 100%;
     .main-inner {
         //margin: 0 auto;
         //max-width: $constrict-wide;
@@ -168,43 +180,41 @@ main {
     article {
         margin: 0 auto;
     }
+
+    .main-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
 }
 
 .main-sidebar {
     width: 0;
 
+    @media only screen and (max-width: ($side-bar-gap + $sidebar-width) * 2 + $constrict-narrow) {
+        & {
+            width: $sidebar-width;
+        }
+    }
+
     $top-gap: 30px;
     position: sticky;
     top: 15px;
-    
-    background: red;
     height: 100vh;
     max-height: calc(100vh - 56px);
     .sidebar-inner {
         height: 100%;
         overflow: auto;
-        &::before {
-            position: absolute;
-            content: "";
-            pointer-events: none;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 100%;
-            /* height: 100vh;
-            max-height: calc(100vh - 56px); */
-            //background: rgba($code-bg, 0.1);
-
-            z-index: -1;
-        }
         margin: $top-gap 0;
-        //border: 1px solid rgba($code-bg, 0.4);
 
-        //box-shadow: 0 0 10px #000;
         width: $sidebar-width;
         transform: translateX(calc(-100% - #{$side-bar-gap}));
-
+        @media only screen and (max-width: ($side-bar-gap + $sidebar-width) * 2 + $constrict-narrow) {
+            & {
+                transform: translateX(calc(-#{$side-bar-gap}));
+            }
+        }
         z-index: 2;
         border-radius: 0.5em;
 
@@ -260,9 +270,12 @@ main {
     }
 }
 
-@media only screen and (max-width: ($side-bar-gap + $sidebar-width) * 2 + $constrict-narrow) {
+@media only screen and (max-width: $side-bar-gap + $sidebar-width + $constrict-narrow + 20px) {
     .main-sidebar {
         display: none;
+    }
+    body {
+        overflow-x: hidden;
     }
 }
 
