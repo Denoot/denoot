@@ -6,7 +6,7 @@ import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 const { default: views } = await import("./build.ts");
 
 const app = Denoot.app(
-    3000,
+    3030,
     "0.0.0.0",
     ({ localhostURL }) => console.log(localhostURL),
 );
