@@ -12,10 +12,11 @@ export interface View {
     path: string;
     name: string;
     htmlFilePath: string;
-    markup: Parsed;
+    markup?: Parsed;
     strippedName: string;
     url: string;
     title: string;
+    desc: string;
     titles: {
         content: string;
         tagName: string;
@@ -40,13 +41,9 @@ const headerItems = [
         path: "/creating-denoot-app",
     },
     {
-        name: "About",
-        path: "#",
-    },
-    {
         name: "",
         icon: icons.gitHub,
-        path: "#",
+        path: "https://github.com/Denoot/denoot",
     },
 ];
 const decoder = new TextDecoder("utf-8");
@@ -72,13 +69,15 @@ for await (
 
     const title = doc.querySelector("h1")!;
 
+    const desc = doc.querySelector("p")!;
+
     if (!title) {
         throw `${path} does not contain a h1 tag`;
     }
 
     const htmlFilePath = `./website/dist/${name}.html`;
 
-    views.push(JSON.parse(JSON.stringify({
+    const view: View = {
         title: title.textContent,
         titles: [...doc.querySelectorAll("[id]")].map((el) => {
             const element = el as Element;
@@ -89,6 +88,7 @@ for await (
                 fragment: element.attributes.id,
             };
         }),
+        desc: desc?.textContent ?? "Denoot documantion",
         path,
         name,
         markup,
@@ -96,7 +96,10 @@ for await (
         strippedName,
         url,
         docs: order.includes(strippedName)
-    })));
+    }
+
+    // remove annoying reference
+    views.push(JSON.parse(JSON.stringify(view)));
 }
 
 views = views.sort((x, y) =>
@@ -135,7 +138,10 @@ await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
  * Generates HTML from pug
  */
 async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
-    const compiled = await compileFile(pugjsTemplate, {})(options ?? {});
+    const compiled = await compileFile(pugjsTemplate, {})({
+            ...(options ?? {}),
+            burgerIcon: icons.burger
+        });
 
     await Deno.writeTextFile(htmlOutput, compiled
         .replace(/Denoot\.Request/g, `<span class="hljs-title">Denoot</span>.<span class="hljs-built_in">Request</span>`)

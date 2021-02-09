@@ -2,6 +2,18 @@
 header
     .header-inner
         .header-row
+            .logo
+                a(href="/" alt="home")
+                    .logo-inner
+                        img(src= "https://i.ibb.co/p30jHtp/circle-cropped.png" alt="Denoot logo")
+                        h1
+                            |Denoot
+        .header-row.header-search-cont
+            form.header-search(action="GET" onsubmit="return false;") 
+                input(type= "text" placeholder="Search")
+            .auto-complete-menu
+                |
+
         nav.header-row.header-row
             for item of headerItems
                 .header-item
@@ -10,3 +22,15 @@ header
                             .header-item-meta.header-item-name= item.name
                             if (item.icon)
                                 .header-item-meta.header-item-icon!= item.icon
+        .header-row
+            .burger!= burgerIcon
+    .mobile-header
+        .mobile-header-cont
+            nav.header-row.header-row
+                for item of headerItems
+                    .header-item
+                        a(href= item.path)
+                            .header-item-inner
+                                .header-item-meta.header-item-name= item.name
+                                if (item.icon)
+                                    .header-item-meta.header-item-icon!= item.icon

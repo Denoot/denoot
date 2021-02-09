@@ -1,6 +1,6 @@
 body,
 html {
-  color: #282c34;
+  color: #000;
   padding: 0;
   margin: 0;
   background: #ffffff;
@@ -26,7 +26,17 @@ header {
           justify-content: center;
 }
 
+header .auto-complete-menu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background: green;
+}
+
 header .header-inner {
+  padding: 0 15px;
   max-width: 1200px;
   width: 100%;
   display: -webkit-box;
@@ -38,6 +48,46 @@ header .header-inner .header-row {
   -webkit-box-flex: 0;
       -ms-flex: none;
           flex: none;
+  position: relative;
+}
+
+header .header-inner .logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+}
+
+header .header-inner .logo .logo-inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+header .header-inner .logo img {
+  position: relative;
+  display: block;
+  height: 40px;
+}
+
+header .header-inner .logo h1 {
+  font-size: 1.8em;
+  margin: 0 0 0 5px;
+  color: #ccc;
+}
+
+@media only screen and (max-width: 1265px) {
+  header .header-inner .logo h1 {
+    display: none;
+  }
 }
 
 header .header-inner nav.header-row {
@@ -47,9 +97,70 @@ header .header-inner nav.header-row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+@media only screen and (max-width: 1000px) {
+  header .header-inner nav.header-row {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+header .header-inner .header-search-cont {
+  max-width: 300px;
+  width: calc(100% - 15px);
+  -webkit-transition: max-width .25s ease-in-out;
+  transition: max-width .25s ease-in-out;
+}
+
+@media only screen and (max-width: 1000px) {
+  header .header-inner .header-search-cont {
+    max-width: unset;
+  }
+}
+
+header .header-inner .header-search-cont:focus-within {
+  max-width: 430px;
+}
+
+@media only screen and (max-width: 1265px) {
+  header .header-inner .header-search-cont:focus-within {
+    max-width: 300px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  header .header-inner .header-search-cont:focus-within {
+    max-width: unset;
+  }
+}
+
+header .header-inner .header-search {
+  position: relative;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+header .header-inner .header-search input {
+  position: relative;
+  width: 100%;
+  border: none;
+  background: #2d2d2d;
+  border-radius: .5em;
+  margin: 0 15px;
+  padding: 13px;
+  color: #ccc;
 }
 
 header .header-item {
@@ -136,7 +247,7 @@ code.lang-sh::before {
           user-select: none;
   pointer-events: none;
   color: lightcoral;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 pre {
@@ -318,7 +429,22 @@ main .main-wrapper {
 
 @media only screen and (max-width: 920px) {
   .main-sidebar {
-    display: none;
+    max-height: 400px;
+    position: relative;
+    overflow: auto;
+    width: 100%;
+    padding: 15px;
+  }
+  .main-sidebar .sidebar-inner {
+    -webkit-transform: none;
+            transform: none;
+    width: unset;
+  }
+  main {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
   body {
     overflow-x: hidden;
@@ -359,18 +485,32 @@ footer .footer-content .footer-inner .footer-row {
   padding: 15px;
 }
 
+@media only screen and (max-width: 920px) {
+  footer .footer-content .footer-inner {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+
 footer .footer-content .footer-footer {
   text-align: center;
   padding: 40px 0 0 0;
 }
 
+.button.inline {
+  display: inline-block;
+}
+
 .button .button-inner {
   padding: 15px;
-  border-radius: .2em;
-  color: #ccc;
+  background: #3f83f8;
+  border-radius: 0.6em;
+  color: #fff;
 }
 
 .button .button-inner:hover {
-  opacity: .8;
+  background: #5390f9;
 }
 /*# sourceMappingURL=index.css.map */

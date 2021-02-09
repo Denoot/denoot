@@ -1,4 +1,5 @@
-# Build in middleware
+# Standard Middleware
+Denoot comes with some essential pre packaged middleware for your convenience.
 ## Cors
 
 If you want to enable cors you can use the build in middleware `cors`

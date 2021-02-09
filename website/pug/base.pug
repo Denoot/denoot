@@ -1,33 +1,41 @@
-head
-    include head
-    include static.html
-    link(rel="stylesheet" href="/static/sass/global.css")
-body
-    include header
-    main
-        include sidebar
-        .main-inner
-            .main-content
-                article
-                    |!{view.markup.content}
-                    hr
-                    - var nextIndex = views.findIndex(k => k.title === view.title)
-                    - var next = views[nextIndex + 1]
-                    - var previous = views[nextIndex - 1]
+<!DOCTYPE html>
+html(lang="en-us")
+    head
+        include head
+        include static.html
+        meta(name="description", content= view.desc)
+        meta(property="og:title" content= view.title)
+        meta(property="og:description" content= view.desc)
 
-                        div(style="display: flex; justify-content: space-between")
-                            if (previous)
-                                .button.inline
-                                    a(href= previous.url)
-                                        .button-inner
-                                            |← #{previous.title}
-                            if (next)
-                                .button.inline
-                                    a(href= next.url)
-                                        .button-inner
-                                            |#{next.title} →
+        title
+            |#{view.title} | Denoot Docs
+        link(rel="stylesheet" href="/static/sass/global.css")
+    body
+        include header
+        main
+            include sidebar
+            .main-inner
+                .main-content
+                    article
+                        |!{view.markup.content}
                         hr
-                        div
-                            p 
-                                |Found an issue with this page? <a href="https://github.com/Denoot/denoot/#{view.path}">Edit it on Github</a>
-    include footer
+                        - var nextIndex = views.findIndex(k => k.title === view.title)
+                        - var next = views[nextIndex + 1]
+                        - var previous = views[nextIndex - 1]
+
+                            div(style="display: flex; justify-content: space-between")
+                                if (previous)
+                                    .button.inline
+                                        a(href= previous.url)
+                                            .button-inner
+                                                |← #{previous.title}
+                                if (next)
+                                    .button.inline
+                                        a(href= next.url)
+                                            .button-inner
+                                                |#{next.title} →
+                            hr
+                            div
+                                p 
+                                    |Found an issue with this page? <a href="https://github.com/Denoot/denoot/#{view.path}">Edit it on Github</a>
+        include footer

@@ -5,7 +5,7 @@
 
 ```ts
 app.get("/fruits/{fruitName}", (req: Denoot.Request, res: Denoot.Response)) => {
-    res.send("You like: " + req.params.get("fruitName").parsed);
+    res.send("You like: " + req.params.get("fruitName")?.parsed);
 });
 ```
 
@@ -26,7 +26,7 @@ app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) 
         return res.send("Invalid User ID, try again!");
     }
 
-    res.send("User ID: " + req.params.get("userID").parsed);
+    res.send("User ID: " + req.params.get("userID")?.parsed);
 });
 
 
