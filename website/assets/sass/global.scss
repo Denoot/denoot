@@ -1,5 +1,18 @@
 @import "theme";
 
+/* *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+*::-webkit-scrollbar-track {
+    background: $color; 
+}
+*::-webkit-scrollbar-thumb {
+    background-color: $background-color; 
+    border-radius: 20px;
+    border: 3px solid transparent; 
+} */
+
 body,
 html {
     color: #000;
@@ -243,7 +256,7 @@ code {
         width: 100%;
         padding: $padding $padding;
         border-radius: $padding * 0.7;
-        background: #dfdfdf;;
+        background: #dfdfdf;
         z-index: -1;
         transform: translate(-50%, -50%);
     }
@@ -342,8 +355,9 @@ main {
     position: sticky;
     top: 0;
     height: 100%;
-    //height: 100vh;
-    //max-height: calc(100vh - 56px);
+    height: 100vh;
+    padding-bottom: 56px;
+    max-height: calc(100vh);
     .sidebar-inner {
         height: 100%;
         overflow: auto;
@@ -383,7 +397,8 @@ main {
                     border-radius: 0.5em;
 
                     &.sidebar-active {
-                        background: rgba($accent, 0.5);
+                        background: $accent;
+                        color: $color-2;
                     }
                     &:not(.sidebar-active):hover {
                         &::before {
@@ -393,10 +408,12 @@ main {
                             position: absolute;
                             top: 50%;
                             left: 0;
+                            z-index: -1;
                             border-radius: inherit;
-                            background: rgba($accent, 0.2);
+                            background: $accent;
                             transform: translateY(-50%);
                         }
+                        color: $color-2;
                     }
                     &.hide {
                         display: none;
