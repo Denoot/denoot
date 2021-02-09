@@ -134,7 +134,10 @@ await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
 async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
     const compiled = await compileFile(pugjsTemplate, {})(options ?? {});
 
-    await Deno.writeTextFile(htmlOutput, compiled);
+    await Deno.writeTextFile(htmlOutput, compiled
+        .replace(/Denoot\.Request/g, `<span class="hljs-title">Denoot</span>.<span class="hljs-built_in">Request</span>`)
+        .replace(/Denoot\.Response/g, `<span class="hljs-title">Denoot</span>.<span class="hljs-built_in">Response</span>`)
+    );
 }
 
 
