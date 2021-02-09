@@ -1,5 +1,5 @@
 # Request / Response
-## Body
+## Reading Request Body
 
 Consuming body from the request can be done by accessing `req.body`. Denoot will detect if the body is JSON and automatically parse it. If Denoot is unable to parse it will resolve as string.
 ```ts

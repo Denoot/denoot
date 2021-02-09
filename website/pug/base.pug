@@ -1,7 +1,7 @@
 head
     include head
     include static.html
-    link(rel="stylesheet", href="/static/sass/global.css")
+    link(rel="stylesheet" href="/static/sass/global.css")
 body
     include header
     main
@@ -10,4 +10,24 @@ body
             .main-content
                 article
                     |!{view.markup.content}
+                    hr
+                    - var nextIndex = views.findIndex(k => k.title === view.title)
+                    - var next = views[nextIndex + 1]
+                    - var previous = views[nextIndex - 1]
+
+                        div(style="display: flex; justify-content: space-between")
+                            if (previous)
+                                .button.inline
+                                    a(href= previous.url)
+                                        .button-inner
+                                            |← #{previous.title}
+                            if (next)
+                                .button.inline
+                                    a(href= next.url)
+                                        .button-inner
+                                            |#{next.title} →
+                        hr
+                        div
+                            p 
+                                |Found an issue with this page? <a href="https://github.com/Denoot/denoot/#{view.path}">Edit it on Github</a>
     include footer

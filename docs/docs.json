@@ -2,9 +2,11 @@
     "order": [
         "getting_started",
         "creating_denoot_app",
-        
-        "middleware",
+
         "sending_response",
+
+        "middleware",
+        
         "http_methods",
         "url_parameters",
         "wildcard_routing",

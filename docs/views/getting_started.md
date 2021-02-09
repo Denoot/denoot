@@ -1,5 +1,5 @@
 # Getting Started
-server.ts
+Create server.ts
 ```ts
 import * as Denoot from "https://deno.land/x/denoot/mod.ts";
 
@@ -13,4 +13,4 @@ Then start the server:
 ```sh
 deno run --allow-net --unstable server.ts
 ```
-After starting open [localhost:3000](http://localhost:3000) 
+After starting open [localhost:3000](http://localhost:3000)

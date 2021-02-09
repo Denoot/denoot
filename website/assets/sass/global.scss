@@ -313,3 +313,23 @@ footer {
     }
         
 }
+
+
+
+.button {
+    a {
+
+    }
+    &.inline {
+        display: inline-block;
+    }
+    .button-inner {
+        padding: 15px;
+        background: $accent;
+        border-radius: .6em;
+        color: $color-2;
+        &:hover {
+            background: lighten($accent, 4%);
+        }
+    }
+}

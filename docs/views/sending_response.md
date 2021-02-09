@@ -1,4 +1,4 @@
-# Sending response
+# Sending Response
 ## JSON
 Denoot will detect if the type is of Array or Object and set application/json Content-Type header as a well as stringify the JSON.
 As Object

@@ -21,6 +21,7 @@ export interface View {
         tagName: string;
         fragment: string;
     }[];
+    docs: boolean;
 }
 
 let views: Array<View> = [];
@@ -61,7 +62,7 @@ for await (
 ) {
     const strippedName = name.replace(".md", "");
 
-    if (!order.includes(strippedName)) continue;
+    
 
     const url = "/" + urlIfy(strippedName);
     const markdown = decoder.decode(await Deno.readFile(path));
@@ -94,6 +95,7 @@ for await (
         htmlFilePath,
         strippedName,
         url,
+        docs: order.includes(strippedName)
     })));
 }
 
@@ -102,13 +104,13 @@ views = views.sort((x, y) =>
 );
 
 for (const view of views) {
-    
+
     await buildPage(view.htmlFilePath, "./website/pug/base.pug", {
-        views,
+        views: views.filter(v => v.docs),
         view,
         headerItems,
     });
-    
+
 }
 
 
@@ -123,7 +125,8 @@ function urlIfy(str: string) {
 // Generate front page
 await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
     headerItems,
-    view: views.find(view => view.title === "Getting Started")
+    getting_started: views.find(view => view.title === "Getting Started"),
+    what_is_denoot: views.find(view => view.title === "What is Denoot?")
 });
 
 
@@ -141,4 +144,4 @@ async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Re
 }
 
 
-export default views;
+export default views.filter(v => v.docs);

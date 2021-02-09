@@ -9,6 +9,6 @@ aside.main-sidebar
                         ul.sidebar-item-list
                             for title of interiorView.titles
                                 - let active = view.title === title.content;
-                                a(href= `${interiorView.url}#${title.content === interiorView.title ? "" : title.fragment}`)
+                                a(href= `${interiorView.url}${title.content === interiorView.title ? "" : "#" + title.fragment}`)
                                     li(class= `item-type-${title.tagName} ${active ? "sidebar-active" : ""} ${view.title !== interiorView.title && title.tagName !== "H1" ? "hide" : ""}`)
                                         |#{title.content}

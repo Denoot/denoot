@@ -363,4 +363,19 @@ footer .footer-content .footer-footer {
   text-align: center;
   padding: 40px 0 0 0;
 }
+
+.button.inline {
+  display: inline-block;
+}
+
+.button .button-inner {
+  padding: 15px;
+  background: #3f83f8;
+  border-radius: .6em;
+  color: #fff;
+}
+
+.button .button-inner:hover {
+  background: #5390f9;
+}
 /*# sourceMappingURL=global.css.map */

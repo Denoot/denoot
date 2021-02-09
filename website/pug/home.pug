@@ -2,8 +2,8 @@ head
     include head
     title= "Denoot"
     include static.html
-    link(rel="stylesheet", href="/static/sass/global.css")
-    link(rel="stylesheet", href="/static/sass/home.css")
+    link(rel="stylesheet" href="/static/sass/global.css")
+    link(rel="stylesheet" href="/static/sass/home.css")
 body
     include header
     main
@@ -14,10 +14,18 @@ body
                         h1 
                             |Denoot
                         p 
-                            |Light-weight, high performance web server for Deno
+                            |Light-weight, high performance web server for <a href="https://deno.land">Deno</a>
 
             .main-inner
                 .main-content
                     article
-                        |!{view.markup.content}
+                        |!{getting_started.markup.content}
+                    div(style="display: flex; justify-content: center")
+                        .button.inline
+                            a(href="/creating-denoot-app")
+                                .button-inner
+                                    |Continue to Docs
+                    hr
+                    article
+                        |!{what_is_denoot.markup.content}
     include footer
