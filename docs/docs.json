@@ -21,11 +21,13 @@
         
         "status_code",
 
+        "standard_middleware.",
+
         "best_practices",
 
         "contribute",
-        "security_concerns",
+        "security_concerns"
 
-        "cors"
+        
     ]
 }
