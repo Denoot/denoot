@@ -25,11 +25,11 @@ __Note:__ You can define path(s) as the first parameter in `app.use`. Defaults t
 ### Example of a Generic Middleware
 Note the use of `app.all`
 ```ts
-app.all((req: Request, res: Response) => {
+app.all((req, res) => {
     req.variables.set("veggies", ["avocado", "carrot", "tomato"]);
 });
 
-app.all((req: Request, res: Response) => {
+app.all((req, res) => {
     res.send(req.variables.get("veggies")); // ["avocado","carrot","tomato"]
 });
 ```

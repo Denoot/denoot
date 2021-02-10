@@ -5,7 +5,7 @@ Denoot has a main `Response` class that organizes all the response methods/prope
 ## Set Cookie
 Call `res.setCookie` with key, value and optionally options.
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res
         .setCookie("cookie-type", "chocolate chip")
         .send("I sent you a cookie");
@@ -13,7 +13,7 @@ app.get("/", (req: Request, res: Response) => {
 ```
 More options
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res
         .setCookie("cookie-type", "chocolate chip", {
             secure: true,
@@ -27,14 +27,14 @@ app.get("/", (req: Request, res: Response) => {
 ## Set Header
 **Method 1: as Map** `res.header.set(headerName, headerValue)`
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res.header.set("X-My-Header", "my-value");
     res.send("Here come headers");
 });
 ```
 **Method 2: as chainable method** `res.setHeader(headerName, headerValue)`
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res
         .setHeader("X-My-Header", "my-value")
         .send("Here come headers");
@@ -48,12 +48,12 @@ Want to read incoming headers? See [Request#headers](https://denoot.dev/request#
 To make Denoot break the response meaning no other routes will be checked use `res.end()`. It's considered a good idea to do this when you have middleware or wildcard routes declared further back that might cause unwanted behavior.
 ```ts
 // Example url: https://example.com/posts/all
-app.get("/posts/all", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/posts/all", (req, res) => {
     res.send([ "Post1", "Post2", "Post3" ]).end();
 });
 
 // This route will not be reached! Since res.end() was called earlier
-app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/posts/{postID}", (req, res) => {
     res.send(posts[ req.params.get("postID").parsed ]);
 });
 ```
@@ -64,7 +64,7 @@ app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
 
 Call `res.status(statusCode)` to set the response status code 
 ```ts
-app.get("/fruits/*", (req: Request, res: Response) => {    
+app.get("/fruits/*", (req, res) => {    
     res
         .status(404)
         .send("Not found!");
@@ -86,10 +86,10 @@ Cheat sheet of Denoot's built in responses.
 ## Reset Old Body and Set New
 ```ts
 // example URL: https://example.com/fruits/banana
-app.get("/fruits/*", (req: Request, res: Response) => {    
+app.get("/fruits/*", (req, res) => {    
     res.send("Apple");
 });
-app.get("/fruits/banana", (req: Request, res: Response) => {    
+app.get("/fruits/banana", (req, res) => {    
     res.setBody("Banana").end(); // "Banana"
 });
 ```

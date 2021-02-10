@@ -14,7 +14,7 @@ app.get("/hello-world", import("./assets/helloWord.ts"));
 app.get("/user/login", login);
 app.get("/user/logout", logout);
 
-app.map("GET", "patch")("/put-test", async (req: Request, res: Response) => {
+app.map("GET", "patch")("/put-test", async (req, res) => {
 
     console.log(await req.body);
 
@@ -22,7 +22,7 @@ app.map("GET", "patch")("/put-test", async (req: Request, res: Response) => {
 
 });
 
-app.any("/any-test", (req: Request, res: Response) => {
+app.any("/any-test", (req, res) => {
 
     console.log("yup", req.denoReq.contentLength);
 

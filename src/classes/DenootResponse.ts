@@ -105,7 +105,7 @@ export default class DenootResponse {
      * Set a cookie value with optional options
      * @param key The cookie name
      * @param value The cookie value
-     * @param options 
+     * @param options optional options
      */
     setCookie(key: string, value: string, options?: SerializeOptions) {
         const newCookieString = serializeCookies(key, value, options ?? {});

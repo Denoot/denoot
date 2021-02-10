@@ -18,12 +18,12 @@ app.static("/static", {
 
 
 for (const view of views) {
-    app.get(view.url, (req: Request, res: Response) => {
+    app.get(view.url, (req, res) => {
         return res.sendFile(view.htmlFilePath);
     });
 }
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     return res.sendFile("./website/dist/front-page.html");
 });
 
@@ -54,7 +54,7 @@ const fuse = new Fuse(views.map(view => {
     return view
 }), options);
 
-app.get("/auto-complete/{query: string}", (req: Request, res: Response) => {
+app.get("/auto-complete/{query: string}", (req, res) => {
 
     const query = decodeURIComponent(req.params.get("query")?.raw ?? "");
 

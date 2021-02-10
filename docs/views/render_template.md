@@ -12,7 +12,7 @@ const handle = new Handlebars();
 
 app.render(handle.renderView.bind(handle));
 
-app.get("/user/{username}", async (req: Request, res: Response) => {
+app.get("/user/{username}", async (req, res) => {
     // assumes ./views/user.hbs and ./views/layouts.main.hbs exists. See https://deno.land/x/handlebars
     await res.render("user", {
         firstname: req.params.get("username").parsed,
@@ -37,7 +37,7 @@ type RenderEngineCallback =
 ```
 After you've declared your rendering engine callback you gain access to `res.render`. This is merely an abstraction for calling the defined rendering engine callback.
 ```ts
-app.get("/home", async (req: Request, res: Response) => {
+app.get("/home", async (req, res) => {
     await res.render("home-page", {
         user: {
             name: "John Doe"

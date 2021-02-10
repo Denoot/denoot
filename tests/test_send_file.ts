@@ -4,7 +4,7 @@ const app = Denoot.app(8000, "0.0.0.0", ({ localhostURL }) => console.log(`Liste
 
 
 // --allow-read --allow-net
-app.get("/file", async (req: Request, res: Response) => {
+app.get("/file", async (req, res) => {
 
     return res.sendFile("src/classes/DenootResponse.ts");
 

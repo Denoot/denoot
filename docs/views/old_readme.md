@@ -18,7 +18,7 @@ import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 ```
@@ -104,7 +104,7 @@ const app = Denoot.app(3000);
 Denoot will detect if the type is of Array or Object and set application/json Content-Type header as a well as stringify the JSON.
 As Object
 ```ts
-app.post("/api/endpoint", (req: Denoot.Request, res: Denoot.Response)) => {
+app.post("/api/endpoint", (req, res) => {
     res.send({
         status: "Lookin' good!"
     });
@@ -112,7 +112,7 @@ app.post("/api/endpoint", (req: Denoot.Request, res: Denoot.Response)) => {
 ```
 Array works too
 ```ts
-app.get("/api/yummy-fruits", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/api/yummy-fruits", (req, res) => {
     res.send([
         "Apple", "Banana", "Orange"
     ]);
@@ -121,7 +121,7 @@ app.get("/api/yummy-fruits", (req: Denoot.Request, res: Denoot.Response)) => {
 __Note:__ if you send Array or Object more than one time Denoot will be unable to stringify the JSON and the response will be in plain text.
 ### HTML
 ```ts
-app.get("/keyboards.html", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/keyboards.html", (req, res) => {
     res.html(`<h1>
         Keyboards are cool
     </h1>`);
@@ -131,14 +131,14 @@ app.get("/keyboards.html", (req: Denoot.Request, res: Denoot.Response)) => {
 
 **Important:** `res.sendFile` is async. You must await the file read or Denoot will assume you don't want to await it. You can either await the promise or return a promise to tell Denoot to wait.
 ```ts
-app.get("/static/video.mp4", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/static/video.mp4", (req, res) => {
     return res.sendFile("./static/video.mp4");
 });
 ```
 Please note the return statement in the above example.
 ### Uint8Array
 ```ts
-app.get("/binary", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/binary", (req, res) => {
     res.send(new Uint8Array([42, 69]);
 });
 ```
@@ -176,7 +176,7 @@ app.map("get", "put", "patch")("/path", callback);
 Denoot organizes url parameters as a `Map<string, Param>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`
 
 ```ts
-app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/{userID: number}", (req, res) => {
     if(req.params.get("userID").error) {
         // Oh no! userID couldn't be parsed
         return res.send("That's not a valid user id");
@@ -187,7 +187,7 @@ app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) 
 ```
 If you don't want to define a type opt-out of writing a type, Denoot will assume the param is of type string
 ```ts
-app.get("/users/{name}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/{name}", (req, res) => {
     res.send("Your name is of type: " + req.params.get("userID").type); // Will be string
 });
 ```
@@ -212,7 +212,7 @@ interface Param {
 Denoot organizes the url search query as a `Map<string, string>` in `req.query`. If you prefer Object instead you can use the readonly property `req.objectQuery`
 ```ts
 // Example url: https://example.com/fruits/search?searchterm=apples&direction=desc
-app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/fruits/search", (req, res) => {
     res.send(
         `You searched for: "${req.query.get("searchterm")}" and sorted ${req.query.get("direction")}`
     ); // Will output: You searched for: "apples" and sorted desc
@@ -228,7 +228,7 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
 ### Get Cookies
 Simply read `req.cookies`.
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     console.table("I got the following cookies:", req.cookies);
 
     res.send("Thanks for the yummy cookies");
@@ -237,7 +237,7 @@ app.get("/", (req: Request, res: Response) => {
 ### Set Cookie
 Call `res.setCookie` with key, value and optionally options.
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res
         .setCookie("cookie-type", "chocolate chip")
         .send("I sent you a cookie");
@@ -245,7 +245,7 @@ app.get("/", (req: Request, res: Response) => {
 ```
 More options
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res
         .setCookie("cookie-type", "chocolate chip", {
             secure: true,
@@ -261,7 +261,7 @@ app.get("/", (req: Request, res: Response) => {
 
 Consuming body from the request can be done by accessing `req.body`. Denoot will detect if the body is JSON and automatically parse it. If Denoot is unable to parse it will resolve as string.
 ```ts
-app.post("/blog-post", async (req: Request, res: Response) => {
+app.post("/blog-post", async (req, res) => {
     const body = await req.body;
 
     console.log("body received:", body);
@@ -271,7 +271,7 @@ app.post("/blog-post", async (req: Request, res: Response) => {
 ```
 Verifying request body example.
 ```ts
-app.post("/comment", async (req: Request, res: Response) => {
+app.post("/comment", async (req, res) => {
     const body = await req.body;
 
     // filter strings
@@ -297,7 +297,7 @@ app.post("/comment", async (req: Request, res: Response) => {
 
 Call `res.status(statusCode)` to set the response status code 
 ```ts
-app.get("/fruits/*", (req: Request, res: Response) => {    
+app.get("/fruits/*", (req, res) => {    
     res
         .status(404)
         .send("Not found!");
@@ -340,7 +340,7 @@ __Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.o
 
 Denoot organizes the headers as Deno native Headers in `req.headers` and `res.headers`. If you prefer Object instead you can use the readonly property `res.headersObject` and respectively `req.headersObject`.
 ```ts
-app.post("/admin/post", (req: Denoot.Request, res: Denoot.Response)) => {
+app.post("/admin/post", (req, res) => {
     req.headers.get("Authorization");
 
     res.headers.set("my-header", "fresh avocado");
@@ -358,12 +358,12 @@ app.post("/admin/post", (req: Denoot.Request, res: Denoot.Response)) => {
 To make Denoot break the response meaning no other routes will be checked use `res.end()`. It's considered a good idea to do this when you have middleware or wildcard routes declared further back that might cause unwanted behavior.
 ```ts
 // Example url: https://example.com/posts/all
-app.get("/posts/all", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/posts/all", (req, res) => {
     res.send([ "Post1", "Post2", "Post3" ]).end();
 });
 
 // This route will not be reached! Since res.end() was called earlier
-app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/posts/{postID}", (req, res) => {
     res.send(posts[ req.params.get("postID").parsed ]);
 });
 ```
@@ -378,11 +378,11 @@ app.get("/posts/{postID}", (req: Denoot.Request, res: Denoot.Response)) => {
 ### Examples
 ```ts
 // example URL: http://example.com/users/123/name
-app.get("/users/*", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/*", (req, res) => {
     res.send("Match!");
 });
 
-app.get("/users/123", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/123", (req, res) => {
     res.send("No Match.");
 });
 ```
@@ -393,7 +393,7 @@ app.get("/users/123", (req: Denoot.Request, res: Denoot.Response)) => {
 
 Denoot accepts either a string or an array of strings as paths.
 ```ts
-app.get(["/api/path", "/api/path2"], (req: Denoot.Request, res: Denoot.Response)) => {
+app.get(["/api/path", "/api/path2"], (req, res) => {
     res.send("Hello There!");
 });
 ```
@@ -413,7 +413,7 @@ const handle = new Handlebars();
 
 app.render(handle.renderView.bind(handle));
 
-app.get("/user/{username}", async (req: Request, res: Response) => {
+app.get("/user/{username}", async (req, res) => {
     // assumes ./views/user.hbs and ./views/layouts.main.hbs exists. See https://deno.land/x/handlebars
     await res.render("user", {
         firstname: req.params.get("username").parsed,
@@ -436,7 +436,7 @@ type RenderEngineCallback = (filePath: string, options: any) => string | Promise
 ```
 After you've declared your rendering engine callback you gain access to `res.render`. This is merely an abstraction for calling the defined rendering engine callback.
 ```ts
-app.get("/home", async (req: Request, res: Response) => {
+app.get("/home", async (req, res) => {
     await res.render("home-page", {
         user: {
             name: "John Doe"
@@ -452,19 +452,19 @@ In the above example Denoot will render the template "home-page" with the provid
 
 Redirect to another URL.
 ```ts
-app.get("/rick-roll", (req: Request, res: Response) => {
+app.get("/rick-roll", (req, res) => {
     res.redirect("https://youtu.be/dQw4w9WgXcQ");
 });
 ```
 Permanent redirect
 ```ts
-app.get("/new-site", (req: Request, res: Response) => {
+app.get("/new-site", (req, res) => {
     res.redirect("http://new.exmaple.com", true);
 });
 ```
 Specified code (301, 302 or 308)
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res.redirect("/home", 308);
 });
 ```
@@ -490,7 +490,7 @@ app.get("/hello-world", import("./routes/helloWord.ts"));
 // routes/helloWorld.ts
 import { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
-export default (req: Request, res: Response) => {
+export default (req, res) => {
     res.send("Hello World!");
 }
 ```
@@ -507,10 +507,10 @@ app.get("/user/logout", logout);
 // routes/user.ts
 import { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
-export const login = (req: Request, res: Response) => {
+export const login = (req, res) => {
     res.send("Welcome back!");
 }
-export const logout = (req: Request, res: Response) => {
+export const logout = (req, res) => {
     res.send("Bye!");
 }
 ```
@@ -527,11 +527,11 @@ const products = {
 };
 
 // Example URL: https://example.com/products/all
-app.get("/products/all", (req: Request, res: Response) => {
+app.get("/products/all", (req, res) => {
     res.send(Object.values(products)); // "["Hammer", "Saw", "Screwdriver"]"
 });
 
-app.get("/products/{productID}", (req: Request, res: Response) => {
+app.get("/products/{productID}", (req, res) => {
     const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
@@ -539,7 +539,7 @@ app.get("/products/{productID}", (req: Request, res: Response) => {
 **How to fix**; simply call `res.end()` in the first route.
 ```ts
 /* ... */
-app.get("/products/all", (req: Request, res: Response) => {
+app.get("/products/all", (req, res) => {
     res
         .send(Object.values(products)) // "["Hammer", "Saw", "Screwdriver"]"
         .end(); // Safe ﾉ(￣ｰ￣ )ﾉ

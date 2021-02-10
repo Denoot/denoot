@@ -4,7 +4,7 @@
 ## Basic example
 
 ```ts
-app.get("/fruits/{fruitName}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/fruits/{fruitName}", (req, res) => {
     res.send("You like: " + req.params.get("fruitName")?.parsed);
 });
 ```
@@ -20,7 +20,7 @@ Types, types and more types! Want to use different types in your url? No problem
 ### Typed Parameter Example
 Note the part `{userID: number}`, we set `UserID` as our parameter name and `number` as the type, simple right?
 ```ts
-app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/{userID: number}", (req, res) => {
     if (req.params.get("userID").error) {
         // Oh no! userID couldn't be parsed
         return res.send("Invalid User ID, try again!");
@@ -37,7 +37,7 @@ app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) 
 
 If you don't want to assign a type simply omit the typing of the parameter, Denoot will assume the param is of type string.
 ```ts
-app.get("/users/{name}", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/users/{name}", (req, res) => {
     res.send("Param type: " + req.params.get("userID").type); // Will be string
 });
 ```

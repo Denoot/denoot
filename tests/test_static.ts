@@ -9,7 +9,7 @@ app.static("/public/", {
     },
 });
 
-app.get("/lol/{ok}", (req: Request, res: Response) => {
+app.get("/lol/{ok}", (req, res) => {
 
     console.log(req.params);
 

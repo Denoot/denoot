@@ -11,7 +11,7 @@ app.get("/hello-world", import("./routes/helloWord.ts"));
 // routes/helloWorld.ts
 import { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
-export default (req: Request, res: Response) => {
+export default (req, res) => {
     res.send("Hello World!");
 }
 ```
@@ -48,11 +48,11 @@ const products = {
 };
 
 // Example URL: https://example.com/products/all
-app.get("/products/all", (req: Request, res: Response) => {
+app.get("/products/all", (req, res) => {
     res.send(Object.values(products)); // "["Hammer", "Saw", "Screwdriver"]"
 });
 
-app.get("/products/{productID}", (req: Request, res: Response) => {
+app.get("/products/{productID}", (req, res) => {
     const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
@@ -60,7 +60,7 @@ app.get("/products/{productID}", (req: Request, res: Response) => {
 **How to fix**; simply call `res.end()` in the first route.
 ```ts
 /* ... */
-app.get("/products/all", (req: Request, res: Response) => {
+app.get("/products/all", (req, res) => {
     res
         .send(Object.values(products)) // "["Hammer", "Saw", "Screwdriver"]"
         .end(); // Safe ﾉ(￣ｰ￣ )ﾉ

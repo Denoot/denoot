@@ -5,7 +5,7 @@ Read more about Denoot Request [here](https://denoot.dev/request).
 
 ```ts
 // Example url: https://example.com/fruits/search?searchterm=apples&direction=desc
-app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
+app.get("/fruits/search", (req, res) => {
     res.send(
         `You searched for: "${req.query.get("searchterm")}" and sorted ${req.query.get("direction")}`
     ); // Will output: You searched for: "apples" and sorted desc

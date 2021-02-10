@@ -6,7 +6,7 @@ Denoot has a main `Request` class that organizes all the request methods/propert
 
 Consuming body from the request can be done by accessing `req.body`. Denoot will detect if the body is JSON and automatically parse it. If Denoot is unable to parse it will resolve as string.
 ```ts
-app.post("/blog-post", async (req: Request, res: Response) => {
+app.post("/blog-post", async (req, res) => {
     const body = await req.body;
 
     console.log("body received:", body);
@@ -16,7 +16,7 @@ app.post("/blog-post", async (req: Request, res: Response) => {
 ```
 Verifying request body example.
 ```ts
-app.post("/comment", async (req: Request, res: Response) => {
+app.post("/comment", async (req, res) => {
     const body = await req.body;
 
     // filter strings
@@ -42,7 +42,7 @@ req.method;
 
 ## Read Cookies
 ```ts
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     console.table("I got the following cookies:", req.cookies);
 
     res.send("Thanks for the yummy cookies");
@@ -99,11 +99,11 @@ returns `Map<string, string>`
 Use this to pass variables through requests.
 
 ```ts
-app.all((req: Request, res: Response) => {
+app.all((req, res) => {
     req.variables.set("likes", "ice cream");
 });
 
-app.post("/likes", (req: Request, res: Response) => {
+app.post("/likes", (req, res) => {
     res.send("Everyone likes: " + req.variables.get("likes"));
 });
 ```
