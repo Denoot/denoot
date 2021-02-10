@@ -31,7 +31,7 @@ app.get("/user/{username}", (req: Denoot.Request, res: Denoot.Response) => {
     /* .. */
 });
 ```
-### Destructured types
+### Destructured Types
 ```ts
 import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
