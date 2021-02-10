@@ -31,7 +31,11 @@
     },
     "website": {
       "cmd": "deno run --allow-write --allow-net --unstable --allow-read ./website/serve.ts",
-      "desc": "refactoring "
+      "desc": "generate website"
+    },
+    "test_cors": {
+      "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_cors.ts",
+      "desc": "Cors built in middleware"
     }
   },
   "watcher": {

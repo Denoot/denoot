@@ -26,7 +26,7 @@ Then start the server:
 ```sh
 deno run --allow-net --unstable server.ts
 ```
-After starting the server open [localhost:3000](http://localhost:3000) 
+After starting the server open [localhost:3000](http://localhost:3000)  
 
 ## [Documentation](https://denoot.dev/creating-denoot-app)
 View the full documentation [here](https://denoot.dev/creating-denoot-app).

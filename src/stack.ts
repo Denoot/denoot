@@ -164,13 +164,13 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
             res._req = req;
 
             let e404 = true;
+      
 
             searchStack: for (const routeStackItem of state.routingStack) {
 
                 debug && console.log("Match request");
 
                 const match = matchRequestWithRoute(req, routeStackItem);
-
 
                 if (!match) continue searchStack;
                 else if (e404) e404 = false;
@@ -181,9 +181,16 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
 
             }
 
+            clearTimeout(timeout);
+
+            if(res.empty) {
+                return denoReq
+                    .respond({ body: "", headers: res.headers, status: 204 })
+                    .catch(() => void 0);
+            }
+
             const createdBody = res.buffer ?? res.body;
 
-            clearTimeout(timeout);
 
             if (e404 || !createdBody && !(res.getStatus >= 300 && res.getStatus < 400)) {
                 // prompt 404 middleware

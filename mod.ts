@@ -3,7 +3,7 @@ import * as routes from "./src/routing/routes.ts";
 import { stackListener } from "./src/stack.ts";
 
 import staticMiddleware from "./src/middleware/static.ts";
-import DenootRequest from "./src/classes/DenootRequest.ts";
+import cors from "./src/middleware/cors.ts";
 
 import type from "./types/definitions.d.ts";
 
@@ -38,10 +38,10 @@ const createDenootState = (port: number, hostname?: string) => {
 }
 
 /**
-     * Creates a Denoot app.
-     * @param port - The port to listen on
-     * @param hostname - The hostname to listen on
-     */
+ * Creates a Denoot app.
+ * @param port - The port to listen on
+ * @param hostname - The hostname to listen on
+ */
 export const app = (port: number, hostname?: string, listeningCallback?: Denoot.ListeningCallback): Denoot.RouteAdders => {
 
     const state = createDenootState(port, hostname);
@@ -84,8 +84,9 @@ export const app = (port: number, hostname?: string, listeningCallback?: Denoot.
 
 }
 
+export default { app, cors };
 
-export default { app };
+
 
 
 export type Request = Denoot.Request;

@@ -24,6 +24,8 @@ declare global {
         export type StaticCallback = (route: DeclarePath, options: StaticRouteOptions) => unknown;
         export type AllowedParameterTypes = "string" | "number" | "any" | "int";
         export type AutoIndexRenderer = (req: Request, res: Response, files: AutoIndexFile[]) => void;
+        export type Cors = null | string | string[] | ((req: Request, res: Response, origin: string) => Promise<boolean> | boolean);
+
 
         export interface StaticRouteBaseOptions {
             index: string;
