@@ -1,11 +1,11 @@
 # Getting Started
 Create `server.ts`
 ```ts
-import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
+import Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 ```

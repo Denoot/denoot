@@ -1,4 +1,3 @@
-import { Cors, Next, Request, Response } from "../../types/definitions.d.ts";
 
 interface CorsOptions {
     continue?: boolean,
@@ -13,26 +12,29 @@ const defaultCorsOptions: CorsOptions = {
     referer: false,
     varyOrigin: true,
     memoize: true,
-    allMethods: false
+    allMethods: true
 }
 
-function setCorsHeader(res: Response, options: CorsOptions) {
+function setCorsHeader(res: Denoot.Response, options: CorsOptions) {
     res.headers.set("Access-Control-Allow-Origin", "*");
 
-    if(options.varyOrigin) {
+    if (options.varyOrigin) {
         res.headers.set("Vary", "Origin");
     }
 }
 
-export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
+export default (cors: Denoot.Cors = null, _options: CorsOptions = defaultCorsOptions) => {
     const options = { ...defaultCorsOptions, ..._options };
 
     const memoize = new Map<string, boolean>();
 
-    return async (req: Request, res: Response, next: Next) => {
+    return async (req: Denoot.Request, res: Denoot.Response, next: Denoot.Next) => {
+        console.log(req.method);
         if (req.method === "OPTIONS" || options.allMethods) {
 
             const origin = req.headers.get(options.referer ? "Referer" : "Origin");
+
+            console.log(req.headers, origin);
 
             if (origin === null) {
                 // Not a cors call
@@ -43,30 +45,31 @@ export default (cors: Cors, _options: CorsOptions = defaultCorsOptions) => {
             // Get memoized value if memoize is enabled
             if (options.memoize && memoize.has(origin)) {
                 if (memoize.get(origin)) {
-                    setCorsHeader(res,options);
+                    setCorsHeader(res, options);
                 }
                 res.setEmpty().end();
                 return next();
             }
 
 
-            // Check if origin is allowed
-            const allowedOrigin = [
+            const conditions = [
+                cors === null,
                 Array.isArray(cors) && cors.includes(origin),
                 typeof cors === 'function' && await cors(req, res, origin),
                 typeof cors === 'string' && cors === origin
-            ].includes(true)
+            ];
 
+            console.log(conditions);
 
+            // Check if origin is allowed
+            const allowedOrigin = conditions.includes(true)
 
             if (allowedOrigin) {
                 setCorsHeader(res, options);
             }
 
-
-
             // Add result in Map if memoize is enabled
-            if(options.memoize) {
+            if (options.memoize) {
                 memoize.set(origin, allowedOrigin);
             }
 

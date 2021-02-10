@@ -1,8 +1,10 @@
-import Denoot, { Request, Response } from "../mod.ts";
+import Denoot from "../mod.ts";
 
 const app = Denoot.app(3000);
 
-app.get("/", (req: Request, res: Response) => {
+app.use(Denoot.cors());
+
+app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 

@@ -1,9 +1,9 @@
-import * as Denoot from "../mod.ts";
+import Denoot from "../mod.ts";
 
 const app = Denoot.app(8000, "0.0.0.0", ({ localhostURL }) => console.log(`Listening on ${localhostURL}`))
 
 app.use(Denoot.cors([
-    "http://localhost:8080",
+    "https://www.google.se",
     "http://app.localhost:8080",
     "http://api.localhost:8080"
 ]));

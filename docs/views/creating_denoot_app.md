@@ -3,13 +3,13 @@ To create a Denoot app you must at least provide `port`. `host` is optional and 
 ## Examples — Pick Your Poison
 ### All Info
 ```ts
-import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
+import Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "0.0.0.0", console.table);
 ```
 ### Regular
 ```ts
-import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
+import Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "localhost", ({ localhostURL }) =>
     console.log(`Listening on ${localhostURL}.`
@@ -17,7 +17,7 @@ const app = Denoot.app(3000, "localhost", ({ localhostURL }) =>
 ```
 ### Minimalistic
 ```ts
-import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
+import Denoot from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 ```
@@ -28,6 +28,16 @@ import Denoot from "https://deno.land/x/denoot/mod.ts";
 const app = Denoot.app(3000);
 
 app.get("/user/{username}", (req: Denoot.Request, res: Denoot.Response) => {
+    /* .. */
+});
+```
+### Destructured types
+```ts
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
+
+const app = Denoot.app(3000);
+
+app.get("/user/{username}", (req: Request, res: Response) => {
     /* .. */
 });
 ```

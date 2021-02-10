@@ -16,7 +16,7 @@ declare global {
         export type DeclarePath = string | string[];
         export type ListeningCallback = (state: DenootState) => unknown;
         export type NextRoute = (value: void | PromiseLike<void>) => void;
-        export type RouteBaseCallback = (req: DenootRequest, res: DenootResponse, next: NextRoute) => unknown;
+        export type RouteBaseCallback = (req: Request, res: Response, next: Next) => unknown;
         export type RouteCallback = RouteBaseCallback | Promise<{ default: RouteBaseCallback }>;
         export type DeclareRoute = ((path: DeclarePath | RouteCallback, callback?: RouteCallback) => unknown);
         export type RenderEngineCallback = (filePath: string, options: any) => string | Promise<string>;
