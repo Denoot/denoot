@@ -4,7 +4,7 @@ const app = Denoot.app(8000, "0.0.0.0", ({ localhostURL }) => console.log(`Liste
 
 app.static("/public/", {
     folder: "tests",
-    autoIndex: (req,res,files) => {
+    autoIndex: (req: Request, res: Response, files: Denoot.AutoIndexFile[]) => {
         res.html(files.map(v => v.name).join(" "));
     },
 });

@@ -1,15 +1,11 @@
-import * as path from "https://deno.land/std@0.85.0/path/mod.ts";
 import { walk } from "https://deno.land/std@0.85.0/fs/mod.ts";
-import DenootResponse from "./../classes/DenootResponse.ts";
-import DenootRequest from "./../classes/DenootRequest.ts";
-import { AutoIndexRenderer, AutoIndexFile } from "./../../types/definitions.d.ts";
 
 /**
  * Generates autoindex html site
  * @author Fritiof Rusck <fritiof@rusck.se>
  */
-export default async (path: string): Promise<AutoIndexFile[]> => {
-    const files: AutoIndexFile[] = [];
+export default async (path: string): Promise<Denoot.AutoIndexFile[]> => {
+    const files: Denoot.AutoIndexFile[] = [];
 
     for await (const entry of walk(path, { maxDepth: 1 })) {
         files.push({
@@ -23,7 +19,7 @@ export default async (path: string): Promise<AutoIndexFile[]> => {
     return files;
 };
 
-export function autoIndexRenderer(req: DenootRequest, res: DenootResponse, files: AutoIndexFile[]) {
+export function autoIndexRenderer(req: Denoot.Request, res: Denoot.Response, files: Denoot.AutoIndexFile[]) {
     let html = `
     <!DOCTYPE html>
         <html>

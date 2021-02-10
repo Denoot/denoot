@@ -23,6 +23,7 @@ declare global {
         export type RenderEngine = (renderCallback: RenderEngineCallback) => unknown;
         export type StaticCallback = (route: DeclarePath, options: StaticRouteOptions) => unknown;
         export type AllowedParameterTypes = "string" | "number" | "any" | "int";
+        export type AutoIndexRenderer = (req: Request, res: Response, files: AutoIndexFile[]) => void;
 
         export interface StaticRouteBaseOptions {
             index: string;
@@ -32,7 +33,7 @@ declare global {
         export interface StaticRouteOptions {
             folder: string;
             index?: string;
-            autoIndex?: boolean;
+            autoIndex?: boolean | AutoIndexRenderer;
         }
 
         export interface Param {
@@ -72,7 +73,12 @@ declare global {
             localhostURL: string;
         }
 
-
+        export interface AutoIndexFile {
+            name: string,
+            isDirectory: boolean,
+            isBack: boolean,
+            path: string
+        }
 
 
         export interface RouteAdders {
