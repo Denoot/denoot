@@ -1,0 +1,18 @@
+aside.main-sidebar
+    .sidebar-inner
+        h1
+            |Docs
+        for interiorView of views
+            .sidebar-item
+                .sidebar-item-inner
+                    if (interiorView.titles && interiorView.titles.length)
+                        ul.sidebar-item-list
+                            for title of interiorView.titles
+                                - let active = view.title === title.content;
+                                - let hidden = view.title !== interiorView.title && title.tagName !== "H1";
+                                a(alt= title.content href= `${interiorView.url}${title.content === interiorView.title ? "" : "#" + title.fragment}`)
+                                    li(
+                                        class= `item-type-${title.tagName} ${active ? "sidebar-active" : ""} ${hidden ? "hide" : ""}`
+                                        aria-hidden=hidden ? "true" : "false"
+                                    )
+                                        |#{title.content}

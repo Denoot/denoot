@@ -1,4 +1,4 @@
-import * as Denoot from "../mod.ts";
+import Denoot, { Request, Response } from "../mod.ts";
 import { login, logout } from "./assets/user.ts";
 
 
@@ -14,7 +14,7 @@ app.get("/hello-world", import("./assets/helloWord.ts"));
 app.get("/user/login", login);
 app.get("/user/logout", logout);
 
-app.map("GET", "patch")("/put-test", async (req: Denoot.Request, res: Denoot.Response) => {
+app.map("GET", "patch")("/put-test", async (req: Request, res: Response) => {
 
     console.log(await req.body);
 
@@ -22,7 +22,7 @@ app.map("GET", "patch")("/put-test", async (req: Denoot.Request, res: Denoot.Res
 
 });
 
-app.any("/any-test", (req: Denoot.Request, res: Denoot.Response) => {
+app.any("/any-test", (req: Request, res: Response) => {
 
     console.log("yup", req.denoReq.contentLength);
 

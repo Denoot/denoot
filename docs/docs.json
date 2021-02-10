@@ -1,0 +1,38 @@
+{
+    "order": [
+        "getting_started",
+        "creating_denoot_app",
+
+        "sending_response",
+
+        "request",
+        "response",
+
+        "middleware",
+        
+        "http_methods",
+        "url_parameters",
+        "wildcard_routing",
+        "multiple_routes",
+        "static_routing",
+        
+        "redirect",
+        
+        "render_template",
+
+        "url_search_query",
+
+        "cookies",
+        "headers",
+        "end_response",
+        
+        "status_code",
+
+        "standard_middleware.",
+
+        "best_practices",
+
+        "contribute",
+        "security_concerns"
+    ]
+}

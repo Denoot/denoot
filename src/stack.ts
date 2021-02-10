@@ -1,5 +1,5 @@
 import * as HTTP from "https://deno.land/std@0.85.0/http/server.ts";
-import { Response, Request, RouteStackItem, AllMethods, RoutePath, RouteCallback, DeclareRouteOptions, AllMethod, RouteBaseCallback, Param, AllowedParameterTypes } from "../types/definitions.d.ts";
+
 import { createParts } from "./routing/routes.ts";
 import DenootResponse from "./classes/DenootResponse.ts";
 import DenootRequest from "./classes/DenootRequest.ts";
@@ -13,7 +13,7 @@ const debug = false;
 
 
 /** Future proof abstraction to declare a route stack item */
-export const declareStackItem = (methods: AllMethods[], state: State) => (path: RoutePath, callback: RouteCallback, options?: DeclareRouteOptions) => {
+export const declareStackItem = (methods: Denoot.AllMethods[], state: State) => (path: Denoot.RoutePath, callback: Denoot.RouteCallback, options?: Denoot.DeclareRouteOptions) => {
 
     const wait = typeof callback === "function" ? Promise.resolve(callback) : callback.then(d => d.default);
 
@@ -39,16 +39,16 @@ const parseRequests = (server: HTTP.Server) => {
 const isWildcard = (part: string) => part === "*";
 
 /** matches incoming requests with declared route stack items */
-const matchRequestWithRoute = (req: Request, route: RouteStackItem) => {
+const matchRequestWithRoute = (req: Denoot.Request, route: Denoot.RouteStackItem) => {
 
-    const allMethods: AllMethod = "_ALL";
+    const allMethods: Denoot.AllMethod = "_ALL";
     const { url: incomingPath, method: incomingMethod } = req;
 
     /* Match correct method
     For performance gains, if the method
     does not match simply exit the function
     instead of doing the other checks */
-    if (!route.methods.includes(incomingMethod as AllMethods) && !route.methods.includes(allMethods)) return false;
+    if (!route.methods.includes(incomingMethod as Denoot.AllMethods) && !route.methods.includes(allMethods)) return false;
 
     const incomingParts = createParts(incomingPath);
     const declaredParts = route.path.params;
@@ -70,9 +70,9 @@ const matchRequestWithRoute = (req: Request, route: RouteStackItem) => {
         if (isWildcard(declaredPart.part)) return true;
 
         if (declaredPart.variable && incomingPart) {
-            const incomingParameter: Param = {
+            const incomingParameter: Denoot.Param = {
                 name: declaredPart.variable.name,
-                type: declaredPart.variable.type as AllowedParameterTypes,
+                type: declaredPart.variable.type as Denoot.AllowedParameterTypes,
                 raw: incomingPart,
                 parsed: null,
                 error: false
@@ -128,7 +128,7 @@ const matchRequestWithRoute = (req: Request, route: RouteStackItem) => {
 
 }
 
-const awaitRoute = (req: Request, res: Response, callback: RouteBaseCallback, options?: DeclareRouteOptions) => {
+const awaitRoute = (req: Denoot.Request, res: Denoot.Response, callback: Denoot.RouteBaseCallback, options?: Denoot.DeclareRouteOptions) => {
 
     return new Promise<void>(async resolve => {
 
