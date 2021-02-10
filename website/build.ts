@@ -17,6 +17,7 @@ export interface View {
     url: string;
     title: string;
     desc: string;
+    titlesArray: string[];
     titles: {
         content: string;
         tagName: string;
@@ -77,17 +78,20 @@ for await (
 
     const htmlFilePath = `./website/dist/${name}.html`;
 
+    const titles = [...doc.querySelectorAll("[id]")].map((el) => {
+        const element = el as Element;
+
+        return {
+            content: el.textContent,
+            tagName: el.nodeName,
+            fragment: element.attributes.id,
+        };
+    })
+
     const view: View = {
         title: title.textContent,
-        titles: [...doc.querySelectorAll("[id]")].map((el) => {
-            const element = el as Element;
-
-            return {
-                content: el.textContent,
-                tagName: el.nodeName,
-                fragment: element.attributes.id,
-            };
-        }),
+        titles,
+        titlesArray: titles.map(v => v.content).slice(1),
         desc: desc?.textContent ?? "Denoot documantion",
         path,
         name,
@@ -144,9 +148,10 @@ async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Re
         });
 
     await Deno.writeTextFile(htmlOutput, compiled
-        .replace(/Denoot\.Request/g, `<span class="hljs-title">Denoot</span>.<span class="hljs-built_in">Request</span>`)
-        .replace(/Denoot\.Response/g, `<span class="hljs-title">Denoot</span>.<span class="hljs-built_in">Response</span>`)
-    );
+        .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>)`)
+        .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>, next: <span class="hljs-built_in">Next</span>)`)
+
+        );
 }
 
 

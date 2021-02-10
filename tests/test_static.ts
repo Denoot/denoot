@@ -1,4 +1,4 @@
-import * as Denoot from "../mod.ts";
+import Denoot, { Request, Response } from "../mod.ts";
 
 const app = Denoot.app(8000, "0.0.0.0", ({ localhostURL }) => console.log(`Listening on ${localhostURL}`))
 
@@ -8,7 +8,7 @@ app.static("/public/", {
     //index: ".html"
 });
 
-app.get("/lol/{ok}", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/lol/{ok}", (req: Request, res: Response) => {
 
     console.log(req.params);
 

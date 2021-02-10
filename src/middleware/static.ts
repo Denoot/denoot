@@ -1,7 +1,6 @@
 import { walkSync } from "https://deno.land/std@0.85.0/fs/mod.ts";
 import * as path from "https://deno.land/std@0.85.0/path/mod.ts";
 
-import { Next, DeclarePath, StaticCallback, StaticRouteOptions, StaticRouteBaseOptions, Request, Response } from "../../types/definitions.d.ts";
 
 import { addRoute, extractVariable, serializePath, createParts, trailingSlash, trailingWildcard } from "../routing/routes.ts";
 import { State } from "../../mod.ts";
@@ -12,13 +11,13 @@ const createPath = (staticPath: string) => (urlPath: string) => {
     return serializePath(`./${urlPath}`);
 }
 
-const DEFAULT_STATIC_OPTIONS: StaticRouteBaseOptions = {
+const DEFAULT_STATIC_OPTIONS: Denoot.StaticRouteBaseOptions = {
     index: "",
     autoIndex: false
 }
 
 // _static must be used because ts strict mode complains
-const _static = (state: State): StaticCallback => (routes: DeclarePath, options: StaticRouteOptions) => {
+const _static = (state: State): Denoot.StaticCallback => (routes: Denoot.DeclarePath, options: Denoot.StaticRouteOptions) => {
 
     const paths = (routes instanceof Array ? routes : [routes])
         .map(route => {
@@ -39,7 +38,7 @@ const _static = (state: State): StaticCallback => (routes: DeclarePath, options:
     const getPath = createPath(staticPath);
     const tempDomain = "http://example.com";
 
-    const staticProvider = (_path: string) => async (req: Request, res: Response, next: Next) => {
+    const staticProvider = (_path: string) => async (req: Denoot.Request, res: Denoot.Response, next: Denoot.Next) => {
 
         
         const url = new URL(tempDomain + req.url);

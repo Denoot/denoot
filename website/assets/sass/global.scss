@@ -247,7 +247,7 @@ p {
 
 code {
     $padding: 0.3em;
-    &::after {
+    /* &::after {
         content: "";
         position: absolute;
         top: 50%;
@@ -259,9 +259,12 @@ code {
         background: #dfdfdf;
         z-index: -1;
         transform: translate(-50%, -50%);
-    }
-    margin: 0 $padding;
+    } */
+    margin: 0 $padding * 0.2;
+    border: $padding solid #dfdfdf;
+    background: #dfdfdf;
     color: $inverse-color;
+    border-radius: $padding * 0.7;
     position: relative;
     z-index: 2;
 
@@ -281,6 +284,10 @@ pre {
     margin: 30px 0;
     position: relative;
     code.hljs {
+        margin: unset;
+        border: unset;
+        background: unset;
+
         $padding: 1rem;
         background: $code-bg;
         padding: 0;
@@ -497,5 +504,15 @@ footer {
         &:hover {
             background: lighten($accent, 4%);
         }
+    }
+}
+
+.header-span {
+    font-size: 0.8em;
+    &.highlight {
+        border: 2px solid $accent;
+        background: $accent;
+        border-radius: .3em;
+        color: $color-2;
     }
 }

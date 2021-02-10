@@ -5,6 +5,9 @@
 
         "sending_response",
 
+        "request",
+        "response",
+
         "middleware",
         
         "http_methods",
@@ -12,10 +15,12 @@
         "wildcard_routing",
         "multiple_routes",
         "static_routing",
-        "request_response",
+        
         "redirect",
         
         "render_template",
+
+        "url_search_query",
 
         "cookies",
         "headers",

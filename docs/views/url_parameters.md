@@ -15,9 +15,9 @@ app.get("/fruits/{fruitName}", (req: Denoot.Request, res: Denoot.Response)) => {
 
 Denoot organizes url parameters as a `Map<string, Param>` in `req.params`. If you prefer Object instead you can use the readonly property `req.objectParams`.
 
-### Typed Parameters
+## Typed Parameters
 Types, types and more types! Want to use different types in your url? No problem simply add a colon followed by one of: `string | number | any | int`.
-#### Typed Parameter Example
+### Typed Parameter Example
 Note the part `{userID: number}`, we set `UserID` as our parameter name and `number` as the type, simple right?
 ```ts
 app.get("/users/{userID: number}", (req: Denoot.Request, res: Denoot.Response)) => {
@@ -53,4 +53,4 @@ interface Param {
 }
 ```
 
-**Note:** it's possible to set params using `req.params.set(key: string, value: Param)` however this is not recommended and is considered bad practice. Instead set custom variables using `req.variables.set("name", "value")`.
+**Note:** it's possible to set params using `req.params.set(key: string, value: Param)` however this is not recommended and is considered bad practice. Instead set custom variables using `req.variables.set("name", "value")`. See [Request#variables](https://denoot.dev/request#set-a-custom-variable)

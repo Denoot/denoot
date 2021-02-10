@@ -1,7 +1,9 @@
-import * as Denoot from "../mod.ts";
+import Denoot, { Request, Response } from "../mod.ts";
 
 const app = Denoot.app(3000);
 
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
+
+

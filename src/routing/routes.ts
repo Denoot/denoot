@@ -1,5 +1,4 @@
 import { declareStackItem } from "../stack.ts";
-import { AllMethods, RouteCallback, DeclarePath, RoutePath, DeclareRouteOptions, DeclareRoute, Methods, MethodsLowerCase, AllowedParameterTypes } from "../../types/definitions.d.ts";
 
 import { State } from "../../mod.ts";
 
@@ -45,10 +44,10 @@ export const createParts = (path: string) => {
 
 }
 
-export const extractVariable = (part: string): ({ name: string, type: AllowedParameterTypes } | null) => {
+export const extractVariable = (part: string): ({ name: string, type: Denoot.AllowedParameterTypes } | null) => {
     // First check to se if there's a : in the variable.
     const isTypeVariable = part.match(/(?<=({.*))(:)(?=(.*}))/);
-    const paramTypes: AllowedParameterTypes[] = ["string", "number", "any", "int"];
+    const paramTypes: Denoot.AllowedParameterTypes[] = ["string", "number", "any", "int"];
 
     if (isTypeVariable) {
         // Since isTypeVariable guarantees a match we can cast this to any,
@@ -61,7 +60,7 @@ export const extractVariable = (part: string): ({ name: string, type: AllowedPar
 
         return {
             name: varName,
-            type: varType as AllowedParameterTypes
+            type: varType as Denoot.AllowedParameterTypes
         }
     } else {
         const varName = part.match(/(?<={)(.*)(?=})/gm);
@@ -76,7 +75,7 @@ export const extractVariable = (part: string): ({ name: string, type: AllowedPar
     }
 }
 
-const createPath = (path: string): RoutePath => {
+const createPath = (path: string): Denoot.RoutePath => {
 
     if (!path.startsWith("/")) {
         throw new Error("Path must begin with forward slash (/)");
@@ -104,11 +103,11 @@ const createPath = (path: string): RoutePath => {
 
 }
 
-export const addRoute = (state: State, methods: AllMethods[], options?: DeclareRouteOptions): DeclareRoute => {
+export const addRoute = (state: State, methods: Denoot.AllMethods[], options?: Denoot.DeclareRouteOptions): Denoot.DeclareRoute => {
 
     const declareRoute = declareStackItem(methods, state);
 
-    return (path: DeclarePath | RouteCallback, callback?: RouteCallback) => {
+    return (path: Denoot.DeclarePath | Denoot.RouteCallback, callback?: Denoot.RouteCallback) => {
 
         const parsedCallback = typeof path === "function" ? path : callback;
 
@@ -142,7 +141,7 @@ export const patch = (state: State) => addRoute(state, ["PATCH"]);
 export const any = (state: State) => addRoute(state, ["_ALL"]);
 
 export const map = (state: State) =>
-    (...methods: (Methods | MethodsLowerCase)[]) =>
-        addRoute(state, methods.map(method => method.toUpperCase()) as Methods[]);
+    (...methods: (Denoot.Methods | Denoot.MethodsLowerCase)[]) =>
+        addRoute(state, methods.map(method => method.toUpperCase()) as Denoot.Methods[]);
 
 export const use = (state: State) => addRoute(state, ["_ALL"], { middleware: true });

@@ -4,7 +4,7 @@ Denoot comes with some essential pre packaged middleware for your convenience.
 
 If you want to enable cors you can use the build in middleware `cors`
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 app.use(Denoot.cors([ "https://example.com", "https://sub.example.com" ])); // Whoo we have Cors
 ```

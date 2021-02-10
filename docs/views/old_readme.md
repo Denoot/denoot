@@ -14,11 +14,11 @@
 
 server.ts
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 ```
@@ -77,18 +77,18 @@ To create app you must at least provide `port`. `host` is optional and will defa
 ### Examples — Pick Your Poison
 
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "0.0.0.0", console.table);
 ```
 
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000, "localhost", ({ localhostURL }) => console.log(`Listening on ${localhostURL}.`));
 ```
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 
 const app = Denoot.app(3000);
 ```
@@ -228,7 +228,7 @@ app.get("/fruits/search", (req: Denoot.Request, res: Denoot.Response)) => {
 ### Get Cookies
 Simply read `req.cookies`.
 ```ts
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     console.table("I got the following cookies:", req.cookies);
 
     res.send("Thanks for the yummy cookies");
@@ -237,7 +237,7 @@ app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
 ### Set Cookie
 Call `res.setCookie` with key, value and optionally options.
 ```ts
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res
         .setCookie("cookie-type", "chocolate chip")
         .send("I sent you a cookie");
@@ -245,7 +245,7 @@ app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
 ```
 More options
 ```ts
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res
         .setCookie("cookie-type", "chocolate chip", {
             secure: true,
@@ -261,7 +261,7 @@ app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
 
 Consuming body from the request can be done by accessing `req.body`. Denoot will detect if the body is JSON and automatically parse it. If Denoot is unable to parse it will resolve as string.
 ```ts
-app.post("/blog-post", async (req: Denoot.Request, res: Denoot.Response) => {
+app.post("/blog-post", async (req: Request, res: Response) => {
     const body = await req.body;
 
     console.log("body received:", body);
@@ -271,7 +271,7 @@ app.post("/blog-post", async (req: Denoot.Request, res: Denoot.Response) => {
 ```
 Verifying request body example.
 ```ts
-app.post("/comment", async (req: Denoot.Request, res: Denoot.Response) => {
+app.post("/comment", async (req: Request, res: Response) => {
     const body = await req.body;
 
     // filter strings
@@ -297,7 +297,7 @@ app.post("/comment", async (req: Denoot.Request, res: Denoot.Response) => {
 
 Call `res.status(statusCode)` to set the response status code 
 ```ts
-app.get("/fruits/*", (req: Denoot.Request, res: Denoot.Response) => {    
+app.get("/fruits/*", (req: Request, res: Response) => {    
     res
         .status(404)
         .send("Not found!");
@@ -405,7 +405,7 @@ app.get(["/api/path", "/api/path2"], (req: Denoot.Request, res: Denoot.Response)
 ### Handlebars Example
 Simple handlebars for Deno example.
 ```ts
-import * as Denoot from "https://deno.land/x/denoot/mod.ts";
+import Denoot, { Request, Response } from "https://deno.land/x/denoot/mod.ts";
 import { Handlebars } from "https://deno.land/x/handlebars/mod.ts";
 
 const app = Denoot.app(3000, "0.0.0.0", ({ localhostURL }) => console.log(`Listening on ${localhostURL}`));
@@ -413,7 +413,7 @@ const handle = new Handlebars();
 
 app.render(handle.renderView.bind(handle));
 
-app.get("/user/{username}", async (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/user/{username}", async (req: Request, res: Response) => {
     // assumes ./views/user.hbs and ./views/layouts.main.hbs exists. See https://deno.land/x/handlebars
     await res.render("user", {
         firstname: req.params.get("username").parsed,
@@ -436,7 +436,7 @@ type RenderEngineCallback = (filePath: string, options: any) => string | Promise
 ```
 After you've declared your rendering engine callback you gain access to `res.render`. This is merely an abstraction for calling the defined rendering engine callback.
 ```ts
-app.get("/home", async (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/home", async (req: Request, res: Response) => {
     await res.render("home-page", {
         user: {
             name: "John Doe"
@@ -452,19 +452,19 @@ In the above example Denoot will render the template "home-page" with the provid
 
 Redirect to another URL.
 ```ts
-app.get("/rick-roll", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/rick-roll", (req: Request, res: Response) => {
     res.redirect("https://youtu.be/dQw4w9WgXcQ");
 });
 ```
 Permanent redirect
 ```ts
-app.get("/new-site", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/new-site", (req: Request, res: Response) => {
     res.redirect("http://new.exmaple.com", true);
 });
 ```
 Specified code (301, 302 or 308)
 ```ts
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.redirect("/home", 308);
 });
 ```
@@ -527,11 +527,11 @@ const products = {
 };
 
 // Example URL: https://example.com/products/all
-app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/all", (req: Request, res: Response) => {
     res.send(Object.values(products)); // "["Hammer", "Saw", "Screwdriver"]"
 });
 
-app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/{productID}", (req: Request, res: Response) => {
     const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
@@ -539,7 +539,7 @@ app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => 
 **How to fix**; simply call `res.end()` in the first route.
 ```ts
 /* ... */
-app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/all", (req: Request, res: Response) => {
     res
         .send(Object.values(products)) // "["Hammer", "Saw", "Screwdriver"]"
         .end(); // Safe ﾉ(￣ｰ￣ )ﾉ

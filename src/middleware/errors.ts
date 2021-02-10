@@ -1,6 +1,5 @@
-import { Next, Request, Response } from "../../types/definitions.d.ts";
 
-export const e404 = (req: Request) => `<html>
+export const e404 = (req: Denoot.Request) => `<html>
     <head>
         <title>404</title>
     </head>
@@ -13,7 +12,7 @@ export const e404 = (req: Request) => `<html>
     </body>
 </html>`;
 
-export const e403 = (req: Request) => `<html>
+export const e403 = (req: Denoot.Request) => `<html>
     <head>
         <title>403</title>
     </head>
@@ -26,7 +25,7 @@ export const e403 = (req: Request) => `<html>
     </body>
 </html>`;
 
-export const middleWare404 = (_req: Request, res: Response, next: Next) => {
+export const middleWare404 = (_req: Denoot.Request, res: Denoot.Response, next: Denoot.Next) => {
 
     res.setError404().end();
 

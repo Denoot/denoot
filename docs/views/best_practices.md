@@ -48,11 +48,11 @@ const products = {
 };
 
 // Example URL: https://example.com/products/all
-app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/all", (req: Request, res: Response) => {
     res.send(Object.values(products)); // "["Hammer", "Saw", "Screwdriver"]"
 });
 
-app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/{productID}", (req: Request, res: Response) => {
     const product = products[req.params.get("productID").parsed];
     res.send(product); // INVALID JSON: "["Hammer", "Saw", "Screwdriver"]Screwdriver"
 });
@@ -60,7 +60,7 @@ app.get("/products/{productID}", (req: Denoot.Request, res: Denoot.Response) => 
 **How to fix**; simply call `res.end()` in the first route.
 ```ts
 /* ... */
-app.get("/products/all", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/products/all", (req: Request, res: Response) => {
     res
         .send(Object.values(products)) // "["Hammer", "Saw", "Screwdriver"]"
         .end(); // Safe ﾉ(￣ｰ￣ )ﾉ

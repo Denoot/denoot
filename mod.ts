@@ -1,13 +1,13 @@
 import { serve } from "https://deno.land/std@0.85.0/http/server.ts";
 import * as routes from "./src/routing/routes.ts";
-import { RouteAdders, DenootState, ListeningCallback, RenderEngineCallback, RouteStackItem } from "./types/definitions.d.ts";
 import { stackListener } from "./src/stack.ts";
 
 import staticMiddleware from "./src/middleware/static.ts";
+import DenootRequest from "./src/classes/DenootRequest.ts";
 
+import type from "./types/definitions.d.ts";
 
-
-const createServer = ({ port, hostname }: DenootState) => {
+const createServer = ({ port, hostname }: Denoot.DenootState) => {
     return serve({ port, hostname });
 }
 
@@ -19,9 +19,9 @@ export class State {
     /** number of seconds before closing the connection */
     public timeout: number = 30;
     /** the set of routes */
-    public readonly routingStack: Set<RouteStackItem> = new Set();
-    public renderer!: RenderEngineCallback;
-    constructor(public options: DenootState) { }
+    public readonly routingStack: Set<Denoot.RouteStackItem> = new Set();
+    public renderer!: Denoot.RenderEngineCallback;
+    constructor(public options: Denoot.DenootState) { }
 }
 
 const createDenootState = (port: number, hostname?: string) => {
@@ -42,7 +42,7 @@ const createDenootState = (port: number, hostname?: string) => {
      * @param port - The port to listen on
      * @param hostname - The hostname to listen on
      */
-export const app = (port: number, hostname?: string, listeningCallback?: ListeningCallback): RouteAdders => {
+export const app = (port: number, hostname?: string, listeningCallback?: Denoot.ListeningCallback): Denoot.RouteAdders => {
 
     const state = createDenootState(port, hostname);
 
@@ -54,7 +54,8 @@ export const app = (port: number, hostname?: string, listeningCallback?: Listeni
 
     stackListener(state, server);
 
-    return {
+    const adders: Denoot.RouteAdders = {
+
         get: routes.get(state),
         head: routes.head(state),
         post: routes.post(state),
@@ -71,41 +72,21 @@ export const app = (port: number, hostname?: string, listeningCallback?: Listeni
 
         map: routes.map(state),
 
-        render: (callback: RenderEngineCallback) => {
+        render: (callback: Denoot.RenderEngineCallback) => {
             state.renderer = callback;
         },
         static: staticMiddleware(state)
     }
 
+    return {
+        ...adders
+    }
+
 }
 
-export default app;
+export default { app };
 
-/**
- * This is extremely infuriating but currently TSC does
- * not support `export type * from x` which is very sad :(
- */
-export type {
-    Request,
-    Response,
-    Next,
-    Methods,
-    MethodsLowerCase,
-    AllMethod,
-    AllMethods,
-    DeclarePath,
-    ListeningCallback,
-    NextRoute,
-    RouteBaseCallback,
-    RouteCallback,
-    DeclareRoute,
-    RenderEngineCallback,
-    RenderEngine,
-    StaticCallback,
-    StaticRouteBaseOptions,
-    StaticRouteOptions,
-    RoutePath,
-    DeclareRouteOptions,
-    RouteStackItem,
-    DenootState
-} from "./types/definitions.d.ts";
+export type Request = Denoot.Request;
+export type Response = Denoot.Response;
+export type Next = Denoot.Next;
+export type Methods = Denoot.Methods;

@@ -19,7 +19,12 @@ app.get("/api/yummy-fruits", (req: Denoot.Request, res: Denoot.Response)) => {
 ```
 __Note:__ if you send Array or Object more than one time Denoot will be unable to stringify the JSON and the response will be in plain text.
 
-
+## Plain Text
+```ts
+app.get("/keyboards.html", (req: Denoot.Request, res: Denoot.Response)) => {
+    res.send(`Lookin' good. Slow down! My man.`);
+});
+```
 ## HTML
 ```ts
 app.get("/keyboards.html", (req: Denoot.Request, res: Denoot.Response)) => {

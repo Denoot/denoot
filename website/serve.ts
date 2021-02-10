@@ -1,4 +1,4 @@
-import * as Denoot from "../mod.ts";
+import Denoot, { Request, Response } from "../mod.ts";
 
 // @deno-types="https://deno.land/x/fuse@v6.4.1/dist/fuse.d.ts"
 import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
@@ -18,12 +18,12 @@ app.static("/static", {
 
 
 for (const view of views) {
-    app.get(view.url, (req: Denoot.Request, res: Denoot.Response) => {
+    app.get(view.url, (req: Request, res: Response) => {
         return res.sendFile(view.htmlFilePath);
     });
 }
 
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     return res.sendFile("./website/dist/front-page.html");
 });
 
@@ -37,7 +37,7 @@ const options = {
             weight: .7
         },
         {
-            name: "titles",
+            name: "titlesArray",
             weight: .6
         },
         {
@@ -54,7 +54,7 @@ const fuse = new Fuse(views.map(view => {
     return view
 }), options);
 
-app.get("/auto-complete/{query: string}", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/auto-complete/{query: string}", (req: Request, res: Response) => {
 
     const query = decodeURIComponent(req.params.get("query")?.raw ?? "");
 

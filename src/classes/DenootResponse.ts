@@ -1,5 +1,4 @@
-import { State } from "../../mod.ts";
-import { Request } from "../../types/definitions.d.ts";
+import { State, Request } from "../../mod.ts";
 import { ServerRequest } from "https://deno.land/std@0.85.0/http/server.ts";
 import { extname } from "https://deno.land/std@0.85.0/path/mod.ts";
 import { e404, e403 } from "../middleware/errors.ts";
@@ -177,7 +176,7 @@ export default class DenootResponse {
      */
     setError404() {
         this.status(404);
-        this._body = [e404(this._req)];
+        this.setBody(e404(this._req));
         return this;
     }
 
@@ -186,7 +185,7 @@ export default class DenootResponse {
      */
     setError403() {
         this.status(403);
-        this._body = [e403(this._req)];
+        this.setBody(e404(this._req));
         return this;
     }
 

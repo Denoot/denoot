@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   var search = document.querySelector(".header-search input");
   var autoCompleteCont = document.querySelector(".auto-complete-menu");
-  var noResults = "<p>No results.</p>";
+  var noResults = "<p style=\"padding: 0 10px; color: #fff\">No results.</p>";
   var debounce = null;
   var req = null;
   search.addEventListener("focus", function (e) {
@@ -38,7 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
           var resp = JSON.parse(this.responseText);
           autoCompleteCont.innerHTML = "\n                            ".concat(resp.length ? resp.map(function (_ref) {
             var item = _ref.item;
-            return "\n                                        <div class=\"search-item\">\n                                            <a href=\"".concat(item.url, "\">\n                                                <div class=\"search-item-inner\">\n                                                    <h3>").concat(item.title, "</h3>\n                                                </div>\n                                            </a>\n                                        </div>\n                                    ");
+            return "\n                                        <div class=\"search-item\">\n                                            <a href=\"".concat(item.url, "\">\n                                                <div class=\"search-item-inner\">\n                                                    <h3>").concat(item.title, "</h3>\n                                                    ").concat(item === null || item === void 0 ? void 0 : item.titlesArray.map(function (v) {
+              var match = v.match(new RegExp(val, "gim"));
+              return "<span class=\"header-span ".concat(match ? "highlight" : "", "\">").concat(v, "</span>");
+            }).join(", "), "\n                                                </div>\n                                            </a>\n                                        </div>\n                                    ");
           }).join("") : noResults, "\n                        ");
         }
       };

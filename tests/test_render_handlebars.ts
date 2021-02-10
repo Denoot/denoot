@@ -20,7 +20,7 @@ const app = denoot.app(3000, "0.0.0.0", ({ localhostURL }) => console.log(`Liste
 
 app.render(handle.renderView.bind(handle));
 
-app.get("/user/{username}", async (req: denoot.Request, res: denoot.Response) => {
+app.get("/user/{username}", async (req: Request, res: Response) => {
     await res.render("test", {
         firstname: req.params.get("username"),
         lastname: "YEAH!"

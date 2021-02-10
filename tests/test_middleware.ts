@@ -1,4 +1,4 @@
-import * as Denoot from "../src/denoot.ts";
+import Denoot, { Request, Response } from "../mod.ts";
 
 const app = Denoot.app(3000);
 
@@ -7,6 +7,6 @@ app.use((req: Denoot.Request, _res: Denoot.Response, next: Denoot.Next) => {
     next();
 });
 
-app.get("/vaggies/echo", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/vaggies/echo", (req: Request, res: Response) => {
     res.send(req.variables.get("veggies")); // ["avocado","carrot","tomato"] 
 });

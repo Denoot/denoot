@@ -3,14 +3,14 @@
 ## External Redirect
 Redirect to another URL.
 ```ts
-app.get("/rick-roll", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/rick-roll", (req: Request, res: Response) => {
     res.redirect("https://youtu.be/dQw4w9WgXcQ");
 });
 
 ```
 ## Permanent redirect
 ```ts
-app.get("/new-site", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/new-site", (req: Request, res: Response) => {
     res.redirect("http://new.exmaple.com", true);
 });
 
@@ -18,7 +18,7 @@ app.get("/new-site", (req: Denoot.Request, res: Denoot.Response) => {
 ## Specified Status Code
 (301, 302 or 308)
 ```ts
-app.get("/", (req: Denoot.Request, res: Denoot.Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.redirect("/home", 308);
 });
 ```

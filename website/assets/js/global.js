@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const search = document.querySelector(".header-search input");
     const autoCompleteCont = document.querySelector(".auto-complete-menu");
-    const noResults = `<p>No results.</p>`;
+    const noResults = `<p style="padding: 0 10px; color: #fff">No results.</p>`;
     let debounce = null;
     let req = null;
 
@@ -47,6 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                             <a href="${item.url}">
                                                 <div class="search-item-inner">
                                                     <h3>${item.title}</h3>
+                                                    ${item?.titlesArray.map(v => {
+
+                                                        const match = v.match(new RegExp(val, "gim"));
+
+                                                        return `<span class="header-span ${match ? "highlight" : ""}">${v}</span>`
+                                                    
+                                                    }).join(", ")}
                                                 </div>
                                             </a>
                                         </div>
