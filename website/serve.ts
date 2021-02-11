@@ -3,7 +3,9 @@ import Denoot, { Request, Response } from "../mod.ts";
 // @deno-types="https://deno.land/x/fuse@v6.4.1/dist/fuse.d.ts"
 import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 
-let { default: views } = await import("./build.ts");
+import { build } from "./build.ts";
+
+let views = await build();
 
 const app = Denoot.app(
     4567,
@@ -81,7 +83,7 @@ app.post("/api/gh", async (req, res) => {
 
     if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("website")))) {
         console.log("passed");
-        views = (await import("./build.ts")).default;
+        views = await build();
     }
 
 });
