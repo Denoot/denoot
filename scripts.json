@@ -39,6 +39,6 @@
     }
   },
   "watcher": {
-    "exts": ["js", "jsx", "ts", "tsx", "json", "pug"]
+    "exts": ["js", "jsx", "ts", "tsx", "json", "pug", "md"]
   }
 }
