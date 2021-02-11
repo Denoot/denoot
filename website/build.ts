@@ -8,6 +8,8 @@ import {
     Element,
 } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
+let sitemap: string[] = [];
+
 export interface View {
     path: string;
     name: string;
@@ -60,7 +62,7 @@ for await (
 ) {
     const strippedName = name.replace(".md", "");
 
-    
+
 
     const url = "/" + urlIfy(strippedName);
     const markdown = decoder.decode(await Deno.readFile(path));
@@ -112,7 +114,7 @@ views = views.sort((x, y) =>
 
 for (const view of views) {
 
-    await buildPage(view.htmlFilePath, "./website/pug/base.pug", {
+    await buildPage(view.url, view.htmlFilePath, "./website/pug/base.pug", {
         views: views.filter(v => v.docs),
         view,
         headerItems,
@@ -130,7 +132,7 @@ function urlIfy(str: string) {
 
 
 // Generate front page
-await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
+await buildPage("/", "./website/dist/front-page.html", "./website/pug/home.pug", {
     headerItems,
     getting_started: views.find(view => view.title === "Getting Started"),
     what_is_denoot: views.find(view => view.title === "What is Denoot?")
@@ -141,18 +143,37 @@ await buildPage("./website/dist/front-page.html", "./website/pug/home.pug", {
 /**
  * Generates HTML from pug
  */
-async function buildPage(htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
+async function buildPage(url: string, htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
+
+    
+    sitemap.push(`
+   <url>
+      <loc>https://denoot.dev${url}</loc>
+      <lastmod>${new Date().toISOString()}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>`);
+
+
     const compiled = await compileFile(pugjsTemplate, {})({
-            ...(options ?? {}),
-            burgerIcon: icons.burger
-        });
+        ...(options ?? {}),
+        burgerIcon: icons.burger
+    });
 
     await Deno.writeTextFile(htmlOutput, compiled
         .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>)`)
         .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>, next: <span class="hljs-built_in">Next</span>)`)
 
-        );
+    );
 }
+
+await Deno.writeTextFile(`./website/dist/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   ${sitemap.join("")}
+</urlset>
+`);
+
 
 
 export default views.filter(v => v.docs);
