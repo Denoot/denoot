@@ -73,10 +73,12 @@ app.get("/sitemap.xml", (req, res) => {
 
 });
 
-app.post("/api/gh", (req, res) => {
+app.post("/api/gh", async (req, res) => {
 
-    const body = req.body as object;
+    const body = await req.body as object;
 
     console.log(body);
+
+    res.send("ok");
 
 });
