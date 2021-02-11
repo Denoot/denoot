@@ -35,7 +35,7 @@ class DenootRequest {
     }
 
 
-    get body(): Promise<string | object | any[]> {
+    get body(): Promise<string | Denoot.JSONBody | any[]> {
         return (async () => {
             const buffer = await Deno.readAll(this.denoReq.body);
             const decoder = new TextDecoder();

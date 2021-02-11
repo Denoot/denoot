@@ -3,7 +3,7 @@ import Denoot, { Request, Response } from "../mod.ts";
 // @deno-types="https://deno.land/x/fuse@v6.4.1/dist/fuse.d.ts"
 import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 
-const { default: views } = await import("./build.ts");
+let { default: views } = await import("./build.ts");
 
 const app = Denoot.app(
     4567,
@@ -75,10 +75,12 @@ app.get("/sitemap.xml", (req, res) => {
 
 app.post("/api/gh", async (req, res) => {
 
-    const body = await req.body as object;
+    const body = await req.body as Denoot.JSONBody;
 
-    console.log(body);
+    res.send("ok").end();
 
-    res.send("ok");
+    if (body.commits.some((v: { modified: string }) => v.modified.startsWith("website"))) {
+        views = (await import("./build.ts")).default;
+    }
 
 });

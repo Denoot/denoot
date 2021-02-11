@@ -82,6 +82,12 @@ declare global {
             path: string
         }
 
+        export interface JSONBody {
+
+            [key: string]: any;
+
+        }
+
 
         export interface RouteAdders {
             /**

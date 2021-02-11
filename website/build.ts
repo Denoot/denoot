@@ -10,6 +10,7 @@ import {
 
 let sitemap: string[] = [];
 
+console.log("Generating docs");
 export interface View {
     path: string;
     name: string;
@@ -165,6 +166,9 @@ async function buildPage(url: string, htmlOutput: string, pugjsTemplate: string,
         .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>, next: <span class="hljs-built_in">Next</span>)`)
 
     );
+
+    console.log(`Built ${url} successfully`);
+
 }
 
 await Deno.writeTextFile(`./website/dist/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>
