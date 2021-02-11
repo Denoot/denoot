@@ -88,7 +88,9 @@ app.post("/api/gh", async (req, res) => {
         console.log("Changes detected");
 
         const cmd = Deno.run({
-            cmd: ["git", "pull"]
+            cmd: ["git", "pull"],
+            stdout: "piped",
+            stderr: "piped"
         });
 
         console.log(await cmd.output());
