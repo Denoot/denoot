@@ -7,7 +7,7 @@ import { build } from "./build.ts";
 
 
 
-let views = await build();
+const views = await build();
 
 const app = Denoot.app(
     3030,
@@ -97,7 +97,8 @@ app.post("/api/gh", async (req, res) => {
 
         cmd.close();
 
-        views = await build();
+        await build();
     }
 
 });
+
