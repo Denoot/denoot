@@ -10,7 +10,7 @@ import { build } from "./build.ts";
 let views = await build();
 
 const app = Denoot.app(
-    4567,
+    3030,
     "0.0.0.0",
     ({ localhostURL }) => console.log(localhostURL),
 );
