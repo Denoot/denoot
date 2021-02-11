@@ -1,3 +1,4 @@
 .vscode/*
 images
 website/dist/*.html
+website/dist/*.xml

@@ -50,8 +50,8 @@ export default class DenootResponse {
      */
     setBody(value: string | object | Array<any> | Uint8Array) {
         this._body = [""];
-        
-        this.send(value);
+
+        return this.send(value);
     }
 
 
@@ -191,9 +191,10 @@ export default class DenootResponse {
      * Ends the request. Sets status to 404. Shows 404 html
      */
     setError404() {
-        this.status(404);
-        this.setBody(e404(this._req));
-        return this;
+        return this
+            .status(404)
+            .setBody(e404(this._req))
+            .html("");
     }
 
     /**
@@ -252,6 +253,7 @@ export default class DenootResponse {
             Deno.stat(path).catch(handleError(true)),
         ]);
 
+
         if (!file || !fileInfo) return this;
 
         const range = this.denoReq.headers.get("range");
@@ -275,7 +277,7 @@ export default class DenootResponse {
             /* seek to client specified range */
             try {
                 await file.seek(seek, Deno.SeekMode.Start);
-            } catch(e) {
+            } catch (e) {
                 return this.setError404().end();
             }
 
@@ -284,7 +286,7 @@ export default class DenootResponse {
             this.headers.set("Content-Range", `bytes ${seek}-${fileInfo.size - 1}/${fileInfo.size}`);
             this.headers.set("Transfer-Encoding", "chunked");
             this.status(206);
-            
+
         }
 
         this.headers.set("Content-Type", contentType(path));

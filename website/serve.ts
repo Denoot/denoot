@@ -66,3 +66,9 @@ app.get("/auto-complete/{query: string}", (req, res) => {
     res.send(result.slice(0, 6));
 
 });
+
+app.get("/sitemap.xml", (req, res) => {
+
+    return res.sendFile(`./website/dist/sitemap.xml`);
+
+});
