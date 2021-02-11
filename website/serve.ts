@@ -79,7 +79,7 @@ app.post("/api/gh", async (req, res) => {
 
     res.send("ok").end();
     console.log(body);
-    if (body.commits.some((v: { modified: string }) => v.modified.startsWith("website"))) {
+    if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("website")))) {
         views = (await import("./build.ts")).default;
     }
 
