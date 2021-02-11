@@ -91,7 +91,7 @@ app.post("/api/gh", async (req, res) => {
             cmd: ["git", "pull"]
         });
 
-        console.log(cmd);
+        console.log(await cmd.output());
 
         cmd.close();
 
