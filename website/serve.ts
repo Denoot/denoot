@@ -78,8 +78,9 @@ app.post("/api/gh", async (req, res) => {
     const body = await req.body as Denoot.JSONBody;
 
     res.send("ok").end();
-    console.log(body);
+
     if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("website")))) {
+        console.log("passed");
         views = (await import("./build.ts")).default;
     }
 
