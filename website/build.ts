@@ -115,7 +115,7 @@ views = views.sort((x, y) =>
 
 for (const view of views) {
 
-    await buildPage(view.url, view.htmlFilePath, "./website/pug/base.pug", {
+    buildPage(view.url, view.htmlFilePath, "./website/pug/base.pug", {
         views: views.filter(v => v.docs),
         view,
         headerItems,
