@@ -6,7 +6,7 @@ import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 const { default: views } = await import("./build.ts");
 
 const app = Denoot.app(
-    3030,
+    4567,
     "0.0.0.0",
     ({ localhostURL }) => console.log(localhostURL),
 );
@@ -70,5 +70,13 @@ app.get("/auto-complete/{query: string}", (req, res) => {
 app.get("/sitemap.xml", (req, res) => {
 
     return res.sendFile(`./website/dist/sitemap.xml`);
+
+});
+
+app.post("/api/gh", (req, res) => {
+
+    const body = req.body as object;
+
+    console.log(body);
 
 });
