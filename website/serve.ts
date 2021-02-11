@@ -5,6 +5,8 @@ import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 
 import { build } from "./build.ts";
 
+
+
 let views = await build();
 
 const app = Denoot.app(
@@ -82,7 +84,15 @@ app.post("/api/gh", async (req, res) => {
     res.send("ok").end();
 
     if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("website")))) {
-        console.log("passed");
+
+        const cmd = Deno.run({
+            cmd: ["git", "pull"]
+        });
+
+        console.log(cmd);
+
+        cmd.close();
+
         views = await build();
     }
 
