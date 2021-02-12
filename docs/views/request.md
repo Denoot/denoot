@@ -30,7 +30,7 @@ app.post("/comment", async (req, res) => {
 });
 ```
 
-Read more about request assertions [here](#)
+Read more about request assertions [here](#assert-condition).
 ## Read URL Parameters
 
 Read more on how to define and read URL parameters [here](https://denoot.dev/url-parameters).
