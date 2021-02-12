@@ -1,5 +1,6 @@
 # Redirect
 
+Redirect request to another location.
 ## External Redirect
 Redirect to another URL.
 ```ts
