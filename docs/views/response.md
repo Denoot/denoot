@@ -94,3 +94,25 @@ app.get("/fruits/banana", (req, res) => {
 });
 ```
 **Note:** If you'd use `res.send` you would get "AppleBanana" since `res.send` appends a new body part.
+
+## Reset Old Body and Set New HTML body
+```ts
+// example URL: https://example.com/links/denoot
+app.get("/links/*", (req, res) => {    
+    res.send("Apple");
+});
+app.get("/link/denoot", (req, res) => {    
+    res.setHTML("<a href='https://denoot.dev'>Denoot!</a>"); // "<a href='https://denoot.dev'>Denoot!</a>"
+});
+```
+**Note:** If you'd use `res.send` you would get "AppleBanana" since `res.send` appends a new body part.
+
+## Redirect
+
+Read more about redirects in Denoot [here](https://denoot.dev/redirect).
+
+```ts
+app.get("/home", (req, res) => {    
+    res.redirect("/");
+});
+```
