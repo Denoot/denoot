@@ -134,8 +134,9 @@ const awaitRoute = (req: Denoot.Request, res: Denoot.Response, callback: Denoot.
 
         await callback(req, res, resolve);
 
-        if (!options?.middleware)
-            resolve();
+        if (!options?.middleware) {
+            Promise.all(req.assertions).then(() => resolve());
+        }
     });
 
 }
@@ -162,6 +163,7 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
             const req = new DenootRequest(state, denoReq);
 
             res._req = req;
+            req._res = res;
 
             let e404 = true;
       
@@ -192,7 +194,7 @@ export const stackListener = async (state: State, server: HTTP.Server) => {
             const createdBody = res.buffer ?? res.body;
 
 
-            if (e404 || !createdBody && !(res.getStatus >= 300 && res.getStatus < 400)) {
+            if (e404 || (!createdBody && !(res.getStatus >= 300 && res.getStatus < 400))) {
                 // prompt 404 middleware
                 await awaitRoute(req, res, middleWare404, {
                     middleware: true

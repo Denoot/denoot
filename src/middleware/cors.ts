@@ -29,13 +29,13 @@ export default (cors: Denoot.Cors = null, _options: CorsOptions = defaultCorsOpt
     const memoize = new Map<string, boolean>();
 
     return async (req: Denoot.Request, res: Denoot.Response, next: Denoot.Next) => {
-        console.log(req.method);
+
         if (req.method === "OPTIONS" || options.allMethods) {
 
             const origin = req.headers.get(options.referer ? "Referer" : "Origin");
 
-            console.log(req.headers, origin);
 
+            
             if (origin === null) {
                 // Not a cors call
                 return next();
@@ -59,8 +59,8 @@ export default (cors: Denoot.Cors = null, _options: CorsOptions = defaultCorsOpt
                 typeof cors === 'string' && cors === origin
             ];
 
-            console.log(conditions);
 
+            
             // Check if origin is allowed
             const allowedOrigin = conditions.includes(true)
 

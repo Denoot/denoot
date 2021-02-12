@@ -29,6 +29,10 @@
       "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_refactoring.ts",
       "desc": "refactoring "
     },
+    "test_body": {
+      "cmd": "deno run --unstable --allow-read --allow-net ./tests/test_body.ts",
+      "desc": "test body consumption"
+    },
     "website": {
       "cmd": "deno run --allow-write --allow-net --unstable --allow-read --allow-run ./website/serve.ts",
       "desc": "generate website"

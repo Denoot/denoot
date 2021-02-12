@@ -45,7 +45,7 @@ export default class DenootResponse {
     }
 
     /**
-     * Override previous body. Uses res.send() internally
+     * Override previous body. Uses `res.html()` internally
      * @param value The new body to override previous body
      */
     setBody(value: string | object | Array<any> | Uint8Array) {
@@ -54,12 +54,23 @@ export default class DenootResponse {
         return this.send(value);
     }
 
+    /**
+     * Override previous body with html. Uses `res.html()` internally
+     * @param value The new body to override previous body
+     */
+    setHTML(value: string) {
+        this._body = [""];
+
+        return this.html(value);
+    }
+
 
     /**
      * This method is appending meaning if you call it multiple times (works cross route) it will append to the existing response body (only for json or string, Uint8Array is not appended)
      * @param value The response to be sent to the client
      */
     send(value: string | object | Array<any> | Uint8Array) {
+
         if (value instanceof Uint8Array) {
             this.headers.set("Content-Type", "application/octet-stream");
             this._buffer = value;
@@ -202,7 +213,7 @@ export default class DenootResponse {
      */
     setError403() {
         this.status(403);
-        this.setBody(e404(this._req));
+        this.setBody(e403(this._req));
         return this;
     }
 
@@ -262,7 +273,7 @@ export default class DenootResponse {
 
         // prevent serving dotfile
         if (basename.startsWith(".") && !this.state.allowDotFiles) {
-            return this.setError403().end();
+            return this.setError404().end();
         }
 
         // partial content?

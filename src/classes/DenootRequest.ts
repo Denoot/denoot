@@ -17,6 +17,9 @@ class DenootRequest {
     private _query: Map<string, string> = new Map();
     private _variables: Map<string, any> = new Map();
     private _headers: Headers;
+    private _assertions: (boolean | Promise<boolean>)[] = [];
+    private _bodyCache: string | Denoot.JSONBody | any[] | null = null;
+    public _res!: Denoot.Response;
 
     
     /**
@@ -36,7 +39,12 @@ class DenootRequest {
 
 
     get body(): Promise<string | Denoot.JSONBody | any[]> {
-        return (async () => {
+
+        if (this._bodyCache) {
+            return Promise.resolve(this._bodyCache);
+        }
+
+        return this._bodyCache = (async () => {
             const buffer = await Deno.readAll(this.denoReq.body);
             const decoder = new TextDecoder();
             const decoded = decoder.decode(buffer);
@@ -123,6 +131,86 @@ class DenootRequest {
         return Object.fromEntries(this._query.entries());
     }
 
+
+    /**
+     * Get the assertions on the request
+     * @readonly
+     */
+    get assertions() {
+        return this._assertions;
+    }
+
+
+    assert(cond: boolean | Promise<boolean> | ((req?: Denoot.Request, res?: Denoot.Response) => boolean | Promise<boolean>)) {
+        class Assertion {
+            constructor(private _cond: typeof cond, private req: Denoot.Request, private res: Denoot.Response) {
+                req._assertions.push(this.resolve());
+            }
+
+            /**
+             * Define what happens if assertion condition is satisfied
+             * @param callback The callback to be called if assertion condition is accepted
+             */
+            accept(callback: (req: Denoot.Request, res: Denoot.Response) => unknown) {
+                this.resolve().then(accepted => {
+                    if (accepted) {
+                        callback(this.req, this.res);
+                    }
+                });
+
+                return this;
+            }
+
+            /**
+             * Define what to do on rejection
+             * @param callback Will be called if condition is rejected
+             */
+            reject(callback: (req: Denoot.Request, res: Denoot.Response) => unknown) {
+                this.resolve().then(accepted => {
+                    if (!accepted) {
+                        callback(this.req, this.res);
+                    }
+                })
+
+                return this;
+            }
+
+            /**
+             * Will always be called regardless if assertion is true or false
+             * @param callback The callback to always be called after an assertion
+             */
+            always(callback: (req: Denoot.Request, res: Denoot.Response) => unknown) {
+                this.resolve().then(() => {
+                    callback(this.req, this.res);
+                })
+            }
+
+            /**
+             * Get the condition you previously provided
+             */
+            get cond() { return this._cond }
+
+            /**
+             * Tap into the assertion process and define custom logic without reject or accept methods
+             */
+            public async resolve(): Promise<boolean> {
+                if (typeof this._cond === "boolean") {
+                    return !!this._cond;
+                } else if (this._cond instanceof Promise) {
+                    return !!(await this._cond);
+                } else if (typeof this._cond === "function") {
+                    return !!(await this._cond)(this.req, this.res);
+                }
+                return false;
+            }
+        }
+
+        return new Assertion(cond, this, this._res);
+        
+
+    }
+
 }
 
 export default DenootRequest;
+
