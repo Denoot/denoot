@@ -35,10 +35,6 @@ Read more about request assertions [here](#assert-condition).
 
 Read more on how to define and read URL parameters [here](https://denoot.dev/url-parameters).
 
-```ts
-req.method;
-```
-
 ## Read Cookies
 ```ts
 app.get("/", (req, res) => {
@@ -62,11 +58,13 @@ returns `Denoot.Methods`
 type Methods = "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "PATCH";
 ```
 
-## Read Url
+## Read request URL
 
 ```ts
 req.url;
 ```
+
+**Note**: Domain name is not included, check the `Referer` or `Origin` header. More info on headers [here](#read-headers).
 
 returns `string`
 
