@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-html(lang="en-us")
+html(lang="en-us").dark-theme
     head
+        - var lightHeader = true; 
         include head
         include static.html
         meta(name="description", content= view.desc)
@@ -10,7 +11,7 @@ html(lang="en-us")
         title
             |#{view.title} | Denoot Docs
         link(rel="stylesheet" href="/static/sass/global.css")
-    body
+    body.white-bg-1.black-text-1
         include header
         main
             include sidebar

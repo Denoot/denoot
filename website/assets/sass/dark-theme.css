@@ -1,0 +1,22 @@
+.dark-theme .white-bg-1 {
+  background-color: #121212 !important;
+}
+
+.dark-theme .white-bg-2 {
+  background-color: #2d2d2d !important;
+}
+
+.dark-theme .black-text-1 {
+  color: #ccc !important;
+}
+
+.dark-theme .black-text-2 {
+  color: #fff !important;
+}
+
+.dark-theme code {
+  background: #2d2d2d !important;
+  border-color: #2d2d2d !important;
+  color: #ccc !important;
+}
+/*# sourceMappingURL=dark-theme.css.map */

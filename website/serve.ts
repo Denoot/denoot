@@ -3,7 +3,8 @@ import Denoot, { Request, Response } from "../mod.ts";
 // @deno-types="https://deno.land/x/fuse@v6.4.1/dist/fuse.d.ts"
 import Fuse from "https://deno.land/x/fuse@v6.4.1/dist/fuse.esm.min.js";
 
-import { build } from "./build.ts";
+import { build, Theme, themeify } from "./build.ts";
+import DenootRequest from "../src/classes/DenootRequest.ts";
 
 
 
@@ -20,17 +21,48 @@ app.static("/static", {
     autoIndex: true,
 });
 
+app.use("/*", (req, res, next) => {
+    
+    req.variables.set("theme", req.cookies.theme ?? "light");
+
+    if (!req.query.has("changeTheme")) return next();
+    
+    const { theme } = req.cookies;
+
+    if (theme && theme === "dark") {
+        res.setCookie("theme", "light", {
+            path: "/"
+        });
+    } else {
+        res.setCookie("theme", "dark", {
+            path: "/"
+        });
+    }
+
+    res.redirect(req.url.split("?")[0]).end();
+
+    next();
+
+});
 
 for (const view of views) {
     app.get(view.url, (req, res) => {
-        return res.sendFile(view.htmlFilePath);
+        return sendFileWithTheme(req, res, view.htmlFilePath);
     });
 }
 
+
+
 app.get("/", (req, res) => {
-    return res.sendFile("./website/dist/front-page.html");
+    return sendFileWithTheme(req, res, "./website/dist/front-page.html");
 });
 
+function sendFileWithTheme(req: Denoot.Request, res: Denoot.Response, path: string) {
+
+    const theme = req.variables.get("theme") as Theme;
+
+    return res.sendFile(themeify(path, theme));
+}
 
 /* search */
 const options = {

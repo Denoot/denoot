@@ -71,6 +71,7 @@ header {
         top: 100%;
         left: 0;
         width: 100%;
+
         z-index: 4;
         background: $background-color;
         max-height: calc(100vh - 56px);
@@ -182,11 +183,13 @@ header {
             input {
                 position: relative;
                 width: 100%;
+                
                 border: none;
                 background: $background-color;
                 border-radius: 0.5em;
                 margin: 0 15px;
                 padding: 13px;
+                font-size: 16px !important;
                 color: $color;
             }
         }
@@ -298,12 +301,19 @@ pre {
         margin: 0;
         width: calc(100% + #{$padding * 2});
         transform: translateX($padding * -1);
+        @media only screen and (max-width: 1000px) {
+            width: 100%;
+            transform: unset;
+        }
         &::after {
             content: unset;
         }
     }
     &::after {
         content: "";
+        @media only screen and (max-width: 1000px) {
+            content: unset;
+        }
         position: absolute;
         top: 50%;
         left: 50%;

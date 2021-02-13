@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-html(lang="en-us")
+html(lang="en-us").dark-theme
     head
         include head
         title= "Denoot"
@@ -9,14 +9,14 @@ html(lang="en-us")
         meta(property="og:description" content= "Light-weight, high performance web server/router for Deno")
         link(rel="stylesheet" href="/static/sass/global.css")
         link(rel="stylesheet" href="/static/sass/home.css")
-    body
+    body.white-bg-1.black-text-1
         include header
         main
             .main-wrapper
                 .main-extend
-                    .hero
+                    .hero.white-bg-2.black-text-1
                         .hero-content
-                            h1 
+                            h1.black-text-2
                                 |Denoot
                             p 
                                 |Light-weight, high performance web server for <a href="https://deno.land">Deno</a>

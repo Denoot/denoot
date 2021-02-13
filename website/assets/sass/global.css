@@ -246,6 +246,7 @@ header .header-inner .header-search input {
   border-radius: 0.5em;
   margin: 0 15px;
   padding: 13px;
+  font-size: 16px !important;
   color: #ccc;
 }
 
@@ -358,6 +359,14 @@ pre code.hljs {
           transform: translateX(-1rem);
 }
 
+@media only screen and (max-width: 1000px) {
+  pre code.hljs {
+    width: 100%;
+    -webkit-transform: unset;
+            transform: unset;
+  }
+}
+
 pre code.hljs::after {
   content: unset;
 }
@@ -375,6 +384,12 @@ pre::after {
   z-index: -1;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+
+@media only screen and (max-width: 1000px) {
+  pre::after {
+    content: unset;
+  }
 }
 
 main {

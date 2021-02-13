@@ -93,7 +93,7 @@ export interface SerializeOptions extends Options {
     sameSite?: true | "lax" | "strict" | "none";
 }
 
-function parse(str: string, options?: object): object {
+function parse(str: string, options?: object): Record<string, string> {
 
     var obj: Record<string, string> = {}
     var opt: ParseOptions = options || {};

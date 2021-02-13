@@ -3,11 +3,13 @@ import { Marked } from "https://deno.land/x/markdown/mod.ts";
 import { Parsed } from "https://deno.land/x/markdown@v2.0.0/src/interfaces.ts";
 import { compileFile } from "https://raw.githubusercontent.com/lumeland/pug/master/mod.js";
 import icons from "./icons.ts";
+import getHeaderItems from "./headerItems.ts";
 import {
     DOMParser,
     Element,
 } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
+export type Theme = "light" | "dark";
 export interface View {
     path: string;
     name: string;
@@ -26,35 +28,18 @@ export interface View {
     docs: boolean;
 }
 
+const themes: Theme[] = ["light", "dark"];
 
 export const build = async () => {
 
     let sitemap: string[] = [];
 
     console.log("Generating docs");
-    
+
 
     let views: Array<View> = [];
 
-    const headerItems = [
-        {
-            name: "Home",
-            path: "/",
-        },
-        {
-            name: "Getting started",
-            path: "/getting-started",
-        },
-        {
-            name: "Docs",
-            path: "/creating-denoot-app",
-        },
-        {
-            name: "",
-            icon: icons.gitHub,
-            path: "https://github.com/Denoot/denoot",
-        },
-    ];
+    
     const decoder = new TextDecoder("utf-8");
 
     const { order } = JSON.parse(
@@ -123,7 +108,6 @@ export const build = async () => {
         buildPage(view.url, view.htmlFilePath, "./website/pug/base.pug", {
             views: views.filter(v => v.docs),
             view,
-            headerItems,
         });
 
     }
@@ -139,7 +123,6 @@ export const build = async () => {
 
     // Generate front page
     await buildPage("/", "./website/dist/front-page.html", "./website/pug/home.pug", {
-        headerItems,
         getting_started: views.find(view => view.title === "Getting Started"),
         what_is_denoot: views.find(view => view.title === "What is Denoot?")
     });
@@ -151,6 +134,7 @@ export const build = async () => {
      */
     async function buildPage(url: string, htmlOutput: string, pugjsTemplate: string, options?: Record<string, unknown>) {
 
+        
 
         sitemap.push(`
        <url>
@@ -161,20 +145,28 @@ export const build = async () => {
        </url>`);
 
 
-        const compiled = await compileFile(pugjsTemplate, {})({
-            ...(options ?? {}),
-            burgerIcon: icons.burger
-        });
+        for (const theme of themes) {
 
-        await Deno.writeTextFile(htmlOutput, compiled
-            .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>)`)
-            .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>, next: <span class="hljs-built_in">Next</span>)`)
+            const compiled = await compileFile(pugjsTemplate, {})({
+                ...(options ?? {}),
+                burgerIcon: icons.burger,
+                headerItems: getHeaderItems(theme),
+                theme
+            });
 
-        );
+            await Deno.writeTextFile(themeify(htmlOutput, theme), compiled
+                .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>)`)
+                .replace(/\(req: Request, res: Response\)/g, `(req: <span class="hljs-built_in">Request</span>, res: <span class="hljs-built_in">Response</span>, next: <span class="hljs-built_in">Next</span>)`)
 
-        console.log(`Built ${url} successfully`);
+            ).then(() => console.log(`Built ${url} with ${theme} theme successfully`));
+
+        }
+
 
     }
+
+
+
 
     await Deno.writeTextFile(`./website/dist/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>
     
@@ -186,3 +178,5 @@ export const build = async () => {
     return views.filter(v => v.docs);;
 
 }
+
+export const themeify = (path: string, theme: Theme) => path.replace(".html", `.${theme}.html`);

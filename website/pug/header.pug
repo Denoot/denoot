@@ -1,5 +1,6 @@
 
-header
+
+header(class=`${lightHeader ? "" : "white-bg-1"}`)
     .header-inner
         .header-row
             .logo
@@ -24,11 +25,11 @@ header
                                 .header-item-meta.header-item-icon!= item.icon
         .header-row
             .burger!= burgerIcon
-    .mobile-header
+    .mobile-header.white-bg-1
         .mobile-header-cont
             nav.header-row.header-row
                 for item of headerItems
-                    .header-item
+                    .header-item.white-bg-1
                         a(href= item.path)
                             .header-item-inner
                                 .header-item-meta.header-item-name= item.name

@@ -4,7 +4,7 @@ aside.main-sidebar
             |Docs
         for interiorView of views
             .sidebar-item
-                .sidebar-item-inner
+                .sidebar-item-inner.white-bg-2
                     if (interiorView.titles && interiorView.titles.length)
                         ul.sidebar-item-list
                             for title of interiorView.titles
@@ -12,7 +12,7 @@ aside.main-sidebar
                                 - let hidden = view.title !== interiorView.title && title.tagName !== "H1";
                                 a(alt= title.content href= `${interiorView.url}${title.content === interiorView.title ? "" : "#" + title.fragment}`)
                                     li(
-                                        class= `item-type-${title.tagName} ${active ? "sidebar-active" : ""} ${hidden ? "hide" : ""}`
+                                        class= `black-text-1 item-type-${title.tagName} ${active ? "sidebar-active" : ""} ${hidden ? "hide" : ""}`
                                         aria-hidden=hidden ? "true" : "false"
                                     )
                                         |#{title.content}
