@@ -115,7 +115,7 @@ app.post("/api/gh", async (req, res) => {
 
     res.send("ok").end();
 
-    if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("docs")))) {
+    if (body.commits.some((v: { modified: string[] }) => v.modified.some(v => v.startsWith("docs") || v.startsWith("website")))) {
 
         console.log("Changes detected");
 
