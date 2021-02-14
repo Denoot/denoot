@@ -124,7 +124,8 @@ export const build = async () => {
     // Generate front page
     await buildPage("/", "./website/dist/front-page.html", "./website/pug/home.pug", {
         getting_started: views.find(view => view.title === "Getting Started"),
-        what_is_denoot: views.find(view => view.title === "What is Denoot?")
+        what_is_denoot: views.find(view => view.title === "What is Denoot?"),
+        views
     });
 
 
