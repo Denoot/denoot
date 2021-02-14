@@ -1,9 +1,29 @@
+*::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #2d2d2d;
+  border: 2px solid #121212;
+}
+
 .dark-theme .white-bg-1 {
   background-color: #121212 !important;
 }
 
 .dark-theme .white-bg-2 {
   background-color: #2d2d2d !important;
+}
+
+@media only screen and (max-width: 1000px) {
+  .dark-theme .white-bg-2-mobile {
+    background-color: #2d2d2d !important;
+  }
 }
 
 .dark-theme .black-text-1 {
