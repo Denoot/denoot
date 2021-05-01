@@ -23,4 +23,7 @@ app.static("/public", {
 });
 ```
 
-__Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) to be served or displayed in auto index. If you absolutely, 100% know what you're doing you can change this behavior by setting `res.state.allowDotFiles` to `true`.
+__Note:__ By default Denoot will **not** allow [dotfiles](https://en.wikipedia.org/wiki/Hidden_file_and_hidden_directory) to be served or displayed in auto index. If you know what youy're doing you can change this behavior by setting `res.state.allowDotFiles` to `true` (dangerous).
+
+## Considerations
+Please read [Best Practices/Static Routing](https://denoot.dev/best-practices#static-routes) before you rely on Denoot static on your deployment app.
