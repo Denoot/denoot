@@ -80,7 +80,7 @@ Cheat sheet of Denoot's built in responses.
 - [HTML](https://denoot.dev/sending-response#html)
 - [File](https://denoot.dev/sending-response#file)
 - [Uint8Array](https://denoot.dev/sending-response#uint8array)
-- [Template](https://denoot.dev/render-templates)
+- [Template](https://denoot.dev/render-template)
 
 
 ## Reset Old Body and Set New
