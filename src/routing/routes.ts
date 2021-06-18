@@ -47,7 +47,7 @@ export const createParts = (path: string) => {
 export const extractVariable = (part: string): ({ name: string, type: Denoot.AllowedParameterTypes } | null) => {
     // First check to se if there's a : in the variable.
     const isTypeVariable = part.match(/(?<=({.*))(:)(?=(.*}))/);
-    const paramTypes: Denoot.AllowedParameterTypes[] = ["string", "number", "any", "int"];
+    const paramTypes: Denoot.AllowedParameterTypes[] = ["number", "int", "float"];
 
     if (isTypeVariable) {
         // Since isTypeVariable guarantees a match we can cast this to any,

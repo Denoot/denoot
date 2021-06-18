@@ -70,36 +70,24 @@ const matchRequestWithRoute = (req: Denoot.Request, route: Denoot.RouteStackItem
         if (isWildcard(declaredPart.part)) return true;
 
         if (declaredPart.variable && incomingPart) {
-            const incomingParameter: Denoot.Param = {
-                name: declaredPart.variable.name,
-                type: declaredPart.variable.type as Denoot.AllowedParameterTypes,
-                raw: incomingPart,
-                parsed: null,
-                error: false
-            };
-
+            let incomingParameter = incomingPart;
             // type checking for URL parameter
             switch (declaredPart.variable.type) {
-                case "any":
-                    incomingParameter.parsed = incomingPart;
-                    break;
-                case "string":
-                    incomingParameter.parsed = incomingPart;
-                    break;
+                case "float":
                 case "number":
                     const parsedNumber = parseFloat(incomingPart);
                     if (isNaN(parsedNumber)) {
-                        incomingParameter.error = true;
+                        incomingParameter = undefined;
                     } else {
-                        incomingParameter.parsed = parsedNumber;
+                        incomingParameter = parsedNumber;
                     }
                     break;
                 case "int":
                     const parsedInt = parseInt(incomingPart);
                     if (isNaN(parsedInt)) {
-                        incomingParameter.error = true;
+                        incomingParameter = undefined;
                     } else {
-                        incomingParameter.parsed = parsedInt;
+                        incomingParameter = parsedInt;
                     }
                     break;
             }
