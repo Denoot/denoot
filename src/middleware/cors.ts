@@ -1,4 +1,3 @@
-
 interface CorsOptions {
     continue?: boolean,
     referer?: boolean,
